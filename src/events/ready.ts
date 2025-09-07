@@ -1,0 +1,18 @@
+import type DiscordClient from "../classes/client";
+import registerCommands from "../util/register";
+import consola from "consola";
+import { Event } from "../classes/event";
+
+export default class ReadyEvent extends Event<"clientReady"> {
+	constructor() {
+		super({
+			name: "clientReady",
+			once: true,
+		});
+	}
+
+	public override async execute(client: DiscordClient): Promise<void> {
+		consola.success(`Logged in as ${client.user!.username} (${client.user!.id})`);
+		await registerCommands(client, Bun.env.NODE_ENV === "development");
+	}
+}
