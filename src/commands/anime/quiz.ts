@@ -14,7 +14,7 @@ import {
 import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Question } from "../../types/quiz";
-import { baseEmbed, cleanText } from "../../util/funcs";
+import { baseEmbed, cleanText, get } from "../../util/funcs";
 
 export default class QuizCommand extends Command {
 	constructor() {
@@ -45,19 +45,17 @@ export default class QuizCommand extends Command {
 		const difficulty = interaction.options.getString("difficulty") || "easy";
 		await interaction.deferReply();
 
-		const response = await fetch(
-			`https://opentdb.com/api.php?amount=1&category=31&type=boolean&difficulty=${difficulty}`
+		const data = await get<{ results: Question[] }>(
+			interaction,
+			`https://opentdb.com/api.php?amount=1&category=31&type=boolean&difficulty=${difficulty}`,
+			300
 		);
 
-		if (!response.ok) {
-			await interaction.editReply({
-				content: `Failed to fetch quiz question. Please try again later.`,
-			});
+		if (!data.results) {
 			return;
 		}
 
-		const data = (await response.json()) as { results: Question[] };
-		if (!data.results || data.results.length === 0) {
+		if (data.results.length === 0) {
 			await interaction.editReply({
 				content: `No quiz questions available. Please try again later.`,
 			});

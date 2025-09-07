@@ -7,6 +7,7 @@ import type { Anime } from "../../types/anime";
 import { Pagination } from "@discordx/pagination";
 import { Command } from "../../classes/command";
 import animeInfoEmbed from "../../util/embeds/anime";
+import { get } from "../../util/funcs";
 
 export default class SeasonCommand extends Command {
 	constructor() {
@@ -48,18 +49,16 @@ export default class SeasonCommand extends Command {
 		const year = interaction.options.getInteger("year", true);
 		const season = interaction.options.getString("season", true);
 
-		const response = await fetch(
+		const data = await get<{ data: Anime[] }>(
+			interaction,
 			`https://api.jikan.moe/v4/seasons/${year}/${season}`,
+			300
 		);
 
-		if (!response.ok) {
-			await interaction.editReply(
-				"Failed to fetch seasonal information. Please try again later.",
-			);
+		if (!data.data) {
 			return;
 		}
 
-		const data = (await response.json()) as { data: Anime[] };
 		const selected = data.data
 			.sort(
 				(a, b) =>

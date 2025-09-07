@@ -7,7 +7,7 @@ import {
 	type ChatInputCommandInteraction,
 } from "discord.js";
 import type DiscordClient from "../../classes/client";
-import { baseEmbed, capitalize } from "../../util/funcs";
+import { baseEmbed, capitalize, get } from "../../util/funcs";
 import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
 
@@ -140,16 +140,11 @@ export default class InfoCommand extends Command {
 			query,
 		)}&limit=5&${params.toString()}`;
 
-		const response = await fetch(URL);
+		const data = await get<{ data: Anime[] }>(interaction, URL, 300);
 
-		if (!response.ok) {
-			await interaction.editReply(
-				`Error fetching anime data: ${response.status} ${response.statusText}`,
-			);
+		if (!data.data) {
 			return;
 		}
-
-		const data = (await response.json()) as { data: Anime[] };
 
 		if (data.data.length === 0) {
 			await interaction.editReply(

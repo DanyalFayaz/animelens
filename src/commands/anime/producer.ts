@@ -7,7 +7,7 @@ import {
 import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Producer } from "../../types/producer";
-import { baseEmbed } from "../../util/funcs";
+import { baseEmbed, get } from "../../util/funcs";
 
 export default class ProduerCommand extends Command {
 	constructor() {
@@ -33,18 +33,15 @@ export default class ProduerCommand extends Command {
 		const query = interaction.options.getString("name", true);
 		await interaction.deferReply();
 
-		const response = await fetch(
+		const data = await get<{ data: Producer[] }>(
+			interaction,
 			`https://api.jikan.moe/v4/producers?q=${encodeURIComponent(query)}&order_by=favorites&sort=desc&limit=5`,
+			300
 		);
 
-		if (!response.ok) {
-			await interaction.editReply(
-				`Error fetching producer data: ${response.status} ${response.statusText}`,
-			);
+		if (!data.data) {
 			return;
 		}
-
-		const data = (await response.json()) as { data: Producer[] };
 
 		if (data.data.length === 0) {
 			await interaction.editReply(`No producers found matching: ${query}`);

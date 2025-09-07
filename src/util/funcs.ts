@@ -1,5 +1,6 @@
-import { Colors, EmbedBuilder, type EmbedData } from "discord.js";
+import { Colors, CommandInteraction, EmbedBuilder, type EmbedData } from "discord.js";
 import { client } from "../";
+import consola from "consola";
 
 /** Capitalizes the first letter of a string
  * @param str The string to capitalize
@@ -68,6 +69,10 @@ export function formatCharAbout(about: string): string {
 	return output.join("\n");
 }
 
+/** Cleans up common HTML entities in a string
+ * @param text The text to clean
+ * @returns The cleaned text
+ */
 export function cleanText(text: string): string {
 	return text
 		.replace(/&quot;/g, '"')
@@ -80,28 +85,42 @@ export function cleanText(text: string): string {
 		.replace(/&hellip;/g, "…");
 }
 
-// ---- Simple in-memory fetch cache (TTL) ----
-interface CacheEntry<T> { value: T; expires: number; }
-const _cache = new Map<string, CacheEntry<unknown>>();
+let cache: { url: string; data: unknown; expiry: number }[] = [];
 
-/** Fetch JSON with basic in-process caching for low-churn endpoints.
+/** Simple in-memory fetch cache
+ * Avoids repeated requests to the same URL.
  * @param url The full request URL (including query string)
- * @param ttlMs Time to live in milliseconds (default 5 minutes)
+ * @param expirySeconds The number of seconds after which the cached data expires
+ * @returns The fetched JSON data or null on error
  */
-export async function fetchCached<T = unknown>(url: string, ttlMs = 5 * 60 * 1000): Promise<T> {
+export async function get<T>(interaction: CommandInteraction, url: string, expirySeconds: number) {
 	const now = Date.now();
-	const existing = _cache.get(url);
-	if (existing && existing.expires > now) {
-		return existing.value as T;
-	}
-	const res = await fetch(url);
-	if (!res.ok) throw new Error(`Request failed ${res.status} ${res.statusText}`);
-	const json = (await res.json()) as T;
-	_cache.set(url, { value: json, expires: now + ttlMs });
-	return json;
-}
+	cache = cache.filter(c => c.expiry > now);
+	const existing = cache.find((c) => c.url === url && now < c.expiry);
 
-export function clearCache(pattern?: RegExp) {
-	if (!pattern) return _cache.clear();
-	for (const key of _cache.keys()) if (pattern.test(key)) _cache.delete(key);
+	if (existing) {
+		return existing.data as T;
+	}
+
+	try {
+		const response = await fetch(url);
+		const data = (await response.json()) as T;
+		cache.push({ url, data, expiry: now + expirySeconds * 1000 });
+
+		return data;
+	} catch (error) {
+		consola.error(
+			`Failed to fetch data from ${url}: ${(error as Error).message}`,
+		);
+		if(interaction.replied || interaction.deferred) {
+			await interaction.editReply(
+				`Error fetching data. Please try again later.`,
+			);
+		} else {
+			await interaction.reply(
+				`Error fetching data. Please try again later.`,
+			);
+		}
+		return {data: null} as unknown as T;
+	}
 }
