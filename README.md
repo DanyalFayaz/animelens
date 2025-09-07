@@ -1,27 +1,15 @@
-# 🍥 AnimeLens
+# 👁️ AnimeLens
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescript.org/)
 [![Bun](https://img.shields.io/badge/Bun-000?logo=bun&logoColor=fff)](https://bun.sh/)
 [![Discord.js](https://img.shields.io/badge/Discord.js-5865F2?logo=discord&logoColor=white)](https://discord.js.org/)
+
+<img src=".github/BANNER.png" alt="AnimeLens Banner" width="600">
 
 A powerful Discord bot for anime and manga enthusiasts! Get instant information about your favorite anime, manga, characters, and more.
 
 > **⚠️ Alpha Version**: This project was created in just a few hours and is currently in alpha. Expect frequent updates and improvements!
-
-## ✨ Features
-
-- **🎯 Anime Information**: Search and get detailed info about any anime
-- **👤 Character Lookup**: Find information about anime characters
-- **🎲 Random Recommendations**: Discover new anime and manga
-- **📈 Trending Content**: See what's popular right now on MAL
-- **📅 Seasonal Anime**: Browse anime by season
-- **🎵 Anime Songs**: Find theme songs and OSTs
-- **📖 Manga Support**: Information about manga series
-- **❓ Interactive Quiz**: Test your anime knowledge
-- **💬 Quote Database**: Browse famous anime quotes
-- **📋 Schedule Tracking**: Keep up with airing schedules
-- **🔄 Real-time Updates**: Hot reload in development mode
 
 ## 🚀 Installation
 
@@ -62,28 +50,17 @@ A powerful Discord bot for anime and manga enthusiasts! Get instant information 
    bun run start
    ```
 
-## 📖 Usage
+## 🏗️ Architecture
 
-Once the bot is running and invited to your server, use slash commands to interact with it:
+AnimeLens is built with a modular architecture to ensure scalability and maintainability:
 
-### Anime Commands
-- `/anime info <title>` - Get detailed information about an anime
-- `/anime character <name>` - Search for anime characters
-- `/anime random` - Get a random anime recommendation
-- `/anime trending` - View trending anime
-- `/anime season <season> <year>` - Browse seasonal anime
-- `/anime schedule` - Check airing schedules
-- `/anime song <title>` - Find anime theme songs
-- `/anime quote` - Browse anime quotes
-- `/anime quiz` - Take an anime quiz
+- **Core Classes**: Located in `src/classes/`, these provide the foundation for commands, events, and client interactions.
+- **Commands**: Organized in `src/commands/` by category (anime, manga, misc), each command extends the base `Command` class.
+- **Events**: Handled in `src/events/`, managing Discord interactions and bot lifecycle.
+- **Utilities**: Helper functions and loaders in `src/util/` for registration and embedding.
+- **Types**: TypeScript definitions in `src/types/` for API responses and data structures.
 
-### Manga Commands
-- `/manga info <title>` - Get information about a manga
-- `/manga random` - Get a random manga recommendation
-
-### Utility Commands
-- `/misc ping` - Check bot latency
-- `/help` - Show all available commands
+The bot uses the Jikan API (unofficial MyAnimeList API) for fetching anime and manga data, and AnimeThemes API for theme songs.
 
 ## 🛠️ Development
 
@@ -93,32 +70,6 @@ Once the bot is running and invited to your server, use slash commands to intera
 - **TypeScript**: Type-safe JavaScript with modern features
 - **Discord.js v14**: Powerful Discord API wrapper
 - **@discordx/pagination**: Interactive pagination for Discord
-
-### Adding New Commands
-
-1. Create a new file in the appropriate category folder under `src/commands/`
-2. Extend the `Command` class and implement the `execute` method
-3. Export the command as default
-4. The loader will automatically pick it up!
-
-Example:
-```typescript
-import { Command } from "../../classes/command";
-
-export default class MyCommand extends Command {
-  constructor() {
-    super({
-      name: "mycommand",
-      description: "My awesome command",
-      category: "misc", // Optional: groups commands
-    });
-  }
-
-  override async execute(client, interaction) {
-    // Your command logic here
-  }
-}
-```
 
 ## 🤝 Contributing
 
@@ -140,6 +91,20 @@ Contributions are welcome! This is an alpha project, so there are plenty of oppo
 5. Push to the branch: `git push origin feature/amazing-feature`
 6. Open a Pull Request
 
+## ❓ FAQ
+
+**Q: How do I get a Discord bot token?**  
+A: Visit the [Discord Developer Portal](https://discord.com/developers/applications), create a new application, and generate a bot token under the "Bot" section.
+
+**Q: The bot isn't responding to commands. What should I do?**  
+A: Ensure the bot has the necessary permissions in your server and that the token is correctly set in the `.env` file. Check the console for any error messages.
+
+**Q: Can I run this bot on my own server?**  
+A: Yes! Follow the installation steps above. Note that you'll need to host it on a server that keeps the process running.
+
+**Q: Is there a limit to API requests?**  
+A: The bot uses the Jikan API & AnimeThemes API, which both have rate limits. In the future we will be implementing better caching and rate limit handling.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -148,6 +113,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **MyAnimeList** for providing the anime/manga database
 - **Jikan API** for the excellent REST API
+- **AnimeThemes API** for the theme song database
 - **Discord.js** community for the amazing library
 - **Bun** team for the fast runtime
 
