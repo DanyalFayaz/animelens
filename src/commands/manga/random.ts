@@ -4,6 +4,7 @@ import { Command } from "../../classes/command";
 import type { Manga } from "../../types/manga";
 import { baseEmbed, get } from "../../util/funcs";
 import mangaInfoEmbed from "../../util/embeds/manga";
+import { emojis } from "../../util/constants";
 
 export default class RandomMangaCommand extends Command {
 	constructor() {
@@ -35,7 +36,7 @@ export default class RandomMangaCommand extends Command {
             components.push(
                 new ButtonBuilder()
                     .setLabel("View on MyAnimeList")
-                    .setEmoji("<:myanimelist:1414137135082115112>")
+                    .setEmoji(emojis.myanimelist)
                     .setStyle(ButtonStyle.Link)
                     .setURL(manga.url)
             );

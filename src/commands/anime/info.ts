@@ -10,6 +10,7 @@ import type DiscordClient from "../../classes/client";
 import { baseEmbed, capitalize, get } from "../../util/funcs";
 import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
+import { emojis } from "../../util/constants";
 
 export default class InfoCommand extends Command {
 	constructor() {
@@ -227,7 +228,7 @@ export default class InfoCommand extends Command {
 			components.push(
 				new ButtonBuilder()
 					.setLabel("View on MyAnimeList")
-					.setEmoji("<:myanimelist:1414137135082115112>")
+					.setEmoji(emojis.myanimelist)
 					.setStyle(ButtonStyle.Link)
 					.setURL(first.url),
 			);
@@ -236,7 +237,7 @@ export default class InfoCommand extends Command {
 			components.push(
 				new ButtonBuilder()
 					.setLabel("View Trailer")
-					.setEmoji("<:youtube:1414137041620570142>")
+					.setEmoji(emojis.youtube)
 					.setStyle(ButtonStyle.Link)
 					.setURL(first.trailer?.url ?? first.url),
 			);

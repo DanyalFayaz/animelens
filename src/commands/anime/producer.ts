@@ -8,6 +8,7 @@ import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Producer } from "../../types/producer";
 import { baseEmbed, get } from "../../util/funcs";
+import { emojis } from "../../util/constants";
 
 export default class ProduerCommand extends Command {
 	constructor() {
@@ -87,7 +88,7 @@ export default class ProduerCommand extends Command {
 			? new ActionRowBuilder<ButtonBuilder>().addComponents(
 					new ButtonBuilder()
 						.setLabel("View on MyAnimeList")
-						.setEmoji("<:myanimelist:1414137135082115112>")
+						.setEmoji(emojis.myanimelist)
 						.setStyle(ButtonStyle.Link)
 						.setURL(producer.url),
 				)

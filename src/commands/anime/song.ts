@@ -11,6 +11,7 @@ import type DiscordClient from "../../classes/client";
 import type { AnimeTheme } from "../../types/theme";
 import { baseEmbed, get } from "../../util/funcs";
 import { Command } from "../../classes/command";
+import { emojis } from "../../util/constants";
 
 export default class SongCommand extends Command {
 	constructor() {
@@ -103,7 +104,7 @@ export default class SongCommand extends Command {
 			components.push(
 				new ButtonBuilder()
 					.setLabel("Watch on AniThemes")
-					.setEmoji("<:animethemes:1414137799313064019>")
+					.setEmoji(emojis.animethemes)
 					.setStyle(ButtonStyle.Link)
 					.setURL(songURL)
 			);
@@ -111,7 +112,7 @@ export default class SongCommand extends Command {
 		components.push(
 			new ButtonBuilder()
 				.setLabel("YouTube Search")
-				.setEmoji("<:youtube:1414137041620570142>")
+				.setEmoji(emojis.youtube)
 				.setStyle(ButtonStyle.Link)
 				.setURL(
 					`https://www.youtube.com/results?search_query=${encodeURIComponent(
@@ -120,7 +121,7 @@ export default class SongCommand extends Command {
 				),
 			new ButtonBuilder()
 				.setLabel("Spotify Search")
-				.setEmoji("<:spotify:1414138589637509120>")
+				.setEmoji(emojis.spotify)
 				.setStyle(ButtonStyle.Link)
 				.setURL(
 					`https://open.spotify.com/search/${encodeURIComponent(

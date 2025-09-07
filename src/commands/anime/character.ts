@@ -10,6 +10,7 @@ import type DiscordClient from "../../classes/client";
 import type { Character } from "../../types/character";
 import { Command } from "../../classes/command";
 import { baseEmbed, formatCharAbout, get } from "../../util/funcs";
+import { emojis } from "../../util/constants";
 
 export default class CharacterCommand extends Command {
 	constructor() {
@@ -89,7 +90,7 @@ export default class CharacterCommand extends Command {
 			? new ActionRowBuilder<ButtonBuilder>().addComponents(
 					new ButtonBuilder()
 						.setLabel("View on MyAnimeList")
-						.setEmoji("<:myanimelist:1414137135082115112>")
+						.setEmoji(emojis.myanimelist)
 						.setStyle(ButtonStyle.Link)
 						.setURL(character.url),
 				)

@@ -3,6 +3,7 @@ import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
 import { baseEmbed, capitalize, get } from "../../util/funcs";
+import { emojis } from "../../util/constants";
 
 export default class RandomCommand extends Command {
 	constructor() {
@@ -69,7 +70,7 @@ export default class RandomCommand extends Command {
 			components.push(
 				new ButtonBuilder()
 					.setLabel("View on MyAnimeList")
-					.setEmoji("<:myanimelist:1414137135082115112>")
+					.setEmoji(emojis.myanimelist)
 					.setStyle(ButtonStyle.Link)
 					.setURL(anime.url)
 			);
@@ -78,7 +79,7 @@ export default class RandomCommand extends Command {
 			components.push(
 				new ButtonBuilder()
 					.setLabel("View Trailer")
-					.setEmoji("<:youtube:1414137041620570142>")
+					.setEmoji(emojis.youtube)
 					.setStyle(ButtonStyle.Link)
 					.setURL(anime.trailer?.url ?? anime.url)
 			);

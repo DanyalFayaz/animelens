@@ -7,6 +7,7 @@ import {
 import type DiscordClient from "../../classes/client";
 import { baseEmbed, capitalize } from "../../util/funcs";
 import { Command } from "../../classes/command";
+import { emojis } from "../../util/constants";
 
 export default class HelpCommand extends Command {
 	constructor() {
@@ -91,7 +92,7 @@ export default class HelpCommand extends Command {
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
 			new ButtonBuilder()
 				.setLabel("View on Github")
-				.setEmoji("<:github:1414137575798472714>")
+				.setEmoji(emojis.github)
 				.setStyle(ButtonStyle.Link)
 				.setURL(Bun.env.GITHUB_REPO_URL!)
 		);
