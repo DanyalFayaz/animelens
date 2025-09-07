@@ -38,7 +38,7 @@ export default async function registerCommands(
 		})),
 	];
 
-	if (!dev)
+	if (!dev && Bun.env.DB_LIST_TOKEN)
 		try {
 			const response = await fetch(
 				`https://discordbotlist.com/api/v1/bots/${client.user!.id}/commands`,
