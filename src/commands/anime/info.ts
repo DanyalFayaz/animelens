@@ -24,6 +24,66 @@ export default class InfoCommand extends Command {
 					description: "The anime to search for",
 					required: true,
 				},
+				{
+					name: "min_score",
+					type: ApplicationCommandOptionType.String,
+					description: "The minimum score to filter by (1-10)",
+					required: false,
+				},
+				{
+					name: "max_score",
+					type: ApplicationCommandOptionType.String,
+					description: "The maximum score to filter by (1-10)",
+					required: false,
+				},
+				{
+					name: "sfw",
+					type: ApplicationCommandOptionType.Boolean,
+					description: "Whether to filter by safe-for-work content",
+					required: false,
+				},
+				{
+					name: "status",
+					type: ApplicationCommandOptionType.String,
+					description: "The status to filter by",
+					required: false,
+					choices: [
+						{ name: "airing", value: "airing" },
+						{ name: "complete", value: "complete" },
+						{ name: "upcoming", value: "upcoming" },
+					],
+				},
+				{
+					name: "type",
+					type: ApplicationCommandOptionType.String,
+					description: "The type to filter by",
+					required: false,
+					choices: [
+						{ name: "tv", value: "Television" },
+						{ name: "movie", value: "Motion Picture" },
+						{ name: "ova", value: "Original Video Animation" },
+						{ name: "ona", value: "Original Net Animation" },
+						{ name: "special", value: "Special Episode" },
+						{ name: "music", value: "Music Video / Music-related release" },
+						{ name: "cm", value: "Commercial" },
+						{ name: "pv", value: "Promotional Video" },
+						{ name: "tv_special", value: "Television Special" },
+					],
+				},
+				{
+					name: "rating",
+					type: ApplicationCommandOptionType.String,
+					description: "The rating to filter by",
+					required: false,
+					choices: [
+						{ name: "g", value: "General Audiences" },
+						{ name: "pg", value: "Parental Guidance" },
+						{ name: "pg13", value: "Parents Strongly Cautioned / 13+" },
+						{ name: "r17", value: "Restricted 17+" },
+						{ name: "r", value: "Restricted" },
+						{ name: "rx", value: "Adult Only / Hentai" },
+					],
+				},
 			],
 		});
 	}
@@ -35,9 +95,52 @@ export default class InfoCommand extends Command {
 		const query = interaction.options.getString("title", true);
 		await interaction.deferReply();
 
-		const response = await fetch(
-			`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=5`,
-		);
+		const minScore = interaction.options.getString("min_score");
+		const maxScore = interaction.options.getString("max_score");
+		const sfw = interaction.options.getBoolean("sfw");
+		const status = interaction.options.getString("status");
+		const type = interaction.options.getString("type");
+		const rating = interaction.options.getString("rating");
+
+		if (
+			minScore &&
+			(isNaN(Number(minScore)) || Number(minScore) < 1 || Number(minScore) > 10)
+		) {
+			await interaction.editReply(
+				"Minimum score must be a number between 1 and 10.",
+			);
+			return;
+		}
+
+		if (
+			maxScore &&
+			(isNaN(Number(maxScore)) || Number(maxScore) < 1 || Number(maxScore) > 10)
+		) {
+			await interaction.editReply(
+				"Maximum score must be a number between 1 and 10.",
+			);
+			return;
+		}
+
+		if (minScore && maxScore && Number(minScore) > Number(maxScore)) {
+			await interaction.editReply(
+				"Minimum score cannot be greater than maximum score.",
+			);
+			return;
+		}
+
+		const params = new URLSearchParams();
+		if (minScore) params.append("min_score", minScore);
+		if (maxScore) params.append("max_score", maxScore);
+		if (sfw !== null) params.append("sfw", sfw.toString());
+		if (status) params.append("status", status);
+		if (type) params.append("type", type);
+		if (rating) params.append("rating", rating);
+		const URL = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(
+			query,
+		)}&limit=5&${params.toString()}`;
+
+		const response = await fetch(URL);
 
 		if (!response.ok) {
 			await interaction.editReply(

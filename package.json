@@ -5,16 +5,16 @@
 	"private": true,
 	"scripts": {
 		"dev": "bun run src/index.ts",
-		"start": "bun src/index.ts",
+		"start": "bun run src/index.ts",
 		"build": "tsc",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@types/bun": "latest",
+		"@types/bun": "^1.2.21",
 		"prettier": "^3.6.2"
 	},
 	"peerDependencies": {
-		"typescript": "^5"
+		"typescript": "^5.9.2"
 	},
 	"dependencies": {
 		"@discordx/pagination": "^4.4.0",
