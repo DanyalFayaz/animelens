@@ -1,5 +1,5 @@
-import { loadAll, watchFiles } from "./util/loader";
-import DiscordClient from "./classes/client";
+import { loadAll, watchFiles } from "@util/loader";
+import DiscordClient from "@classes/client";
 
 export const client = new DiscordClient();
 const dev = Bun.env.NODE_ENV === "development";

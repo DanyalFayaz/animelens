@@ -1,6 +1,6 @@
 import type { CommandInteraction } from "discord.js";
-import { baseEmbed } from "../funcs";
-import type { Manga } from "../../types/manga";
+import { baseEmbed } from "@util/funcs";
+import type { Manga } from "@interfaces/manga";
 
 export default function mangaInfoEmbed(
 	interaction: CommandInteraction,

@@ -1,5 +1,5 @@
-import type { Command } from "../classes/command";
-import type DiscordClient from "../classes/client";
+import type { Command } from "@classes/command";
+import type DiscordClient from "@classes/client";
 import { REST, Routes, ApplicationCommandOptionType } from "discord.js";
 import { capitalize } from "./funcs";
 import consola from "consola";

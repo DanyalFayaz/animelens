@@ -6,11 +6,11 @@ import {
 	ApplicationCommandOptionType,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { Command } from "../../classes/command";
-import type { Manga } from "../../types/manga";
-import { baseEmbed, get } from "../../util/funcs";
-import { emojis } from "../../util/constants";
+import type DiscordClient from "@classes/client";
+import type { Manga } from "@interfaces/manga";
+import { baseEmbed, get } from "@util/funcs";
+import { Command } from "@classes/command";
+import { emojis } from "@util/constants";
 
 export default class MangaInfoCommand extends Command {
 	constructor() {
@@ -18,6 +18,7 @@ export default class MangaInfoCommand extends Command {
 			name: "info",
 			description: "Get information about a specific manga.",
 			category: "manga",
+			cooldown: 10,
 			options: [
 				{
 					name: "title",

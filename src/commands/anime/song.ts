@@ -7,11 +7,11 @@ import {
 	ApplicationCommandOptionType,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import type { AnimeTheme } from "../../types/theme";
-import { baseEmbed, get } from "../../util/funcs";
-import { Command } from "../../classes/command";
-import { emojis } from "../../util/constants";
+import type DiscordClient from "@classes/client";
+import type { AnimeTheme } from "@interfaces/theme";
+import { baseEmbed, get } from "@util/funcs";
+import { Command } from "@classes/command";
+import { emojis } from "@util/constants";
 
 export default class SongCommand extends Command {
 	constructor() {
@@ -19,6 +19,7 @@ export default class SongCommand extends Command {
 			name: "song",
 			description: "Get information about an anime song",
 			category: "anime",
+			cooldown: 10,
 			options: [
 				{
 					name: "title",

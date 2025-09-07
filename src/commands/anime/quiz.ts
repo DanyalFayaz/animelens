@@ -1,20 +1,17 @@
-import type {
-	ChatInputCommandInteraction,
-	GuildTextBasedChannel,
-} from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
 import {
 	ActionRowBuilder,
+	ComponentType,
 	ButtonBuilder,
 	ButtonStyle,
-	ComponentType,
-	type ButtonInteraction,
+	ApplicationCommandOptionType,
 	type Collection,
+	type ButtonInteraction,
+	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { Command } from "../../classes/command";
-import type { Question } from "../../types/quiz";
-import { baseEmbed, cleanText, get } from "../../util/funcs";
+import type { Question } from "@interfaces/quiz";
+import type DiscordClient from "@classes/client";
+import { baseEmbed, cleanText, get } from "@util/funcs";
+import { Command } from "@classes/command";
 
 export default class QuizCommand extends Command {
 	constructor() {
@@ -22,6 +19,7 @@ export default class QuizCommand extends Command {
 			name: "quiz",
 			description: "Starts a random anime true or false quiz.",
 			category: "anime",
+			cooldown: 10,
 			options: [
 				{
 					name: "difficulty",
@@ -40,7 +38,7 @@ export default class QuizCommand extends Command {
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const difficulty = interaction.options.getString("difficulty") || "easy";
 		await interaction.deferReply();
@@ -48,7 +46,7 @@ export default class QuizCommand extends Command {
 		const data = await get<{ results: Question[] }>(
 			interaction,
 			`https://opentdb.com/api.php?amount=1&category=31&type=boolean&difficulty=${difficulty}`,
-			0
+			0,
 		);
 
 		if (!data.results) {
@@ -90,7 +88,7 @@ export default class QuizCommand extends Command {
 			.setStyle(ButtonStyle.Danger);
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
 			trueBtn,
-			falseBtn
+			falseBtn,
 		);
 
 		await interaction.editReply({
@@ -136,7 +134,7 @@ export default class QuizCommand extends Command {
 			"end",
 			async (
 				collected: Collection<string, ButtonInteraction>,
-				reason: string
+				reason: string,
 			) => {
 				if (reason === "time" && collected.size === 0) {
 					row.components.forEach((c) => c.setDisabled(true));
@@ -148,7 +146,7 @@ export default class QuizCommand extends Command {
 						components: [row],
 					});
 				}
-			}
+			},
 		);
 	}
 }

@@ -46,3 +46,13 @@ npm-debug.log*
 bun.lock
 .pnpm-debug.log*
 pnpm-lock.yaml
+
+# Prisma
+/src/util/db/generated
+/prisma/migrations
+/prisma/dev.db
+/prisma/dev.db-journal
+/prisma/test.db
+/prisma/test.db-journal
+/prisma/prod.db
+/prisma/prod.db-journal

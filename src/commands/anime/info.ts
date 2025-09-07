@@ -6,11 +6,11 @@ import {
 	ApplicationCommandOptionType,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { baseEmbed, capitalize, get } from "../../util/funcs";
-import { Command } from "../../classes/command";
-import type { Anime } from "../../types/anime";
-import { emojis } from "../../util/constants";
+import type DiscordClient from "@classes/client";
+import type { Anime } from "@interfaces/anime";
+import { baseEmbed, capitalize, get } from "@util/funcs";
+import { Command } from "@classes/command";
+import { emojis } from "@util/constants";
 
 export default class InfoCommand extends Command {
 	constructor() {
@@ -18,6 +18,7 @@ export default class InfoCommand extends Command {
 			name: "info",
 			description: "Get information about an anime",
 			category: "anime",
+			cooldown: 10,
 			options: [
 				{
 					name: "title",

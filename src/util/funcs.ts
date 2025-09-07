@@ -5,6 +5,9 @@ import {
 	type EmbedData,
 } from "discord.js";
 import { client } from "../";
+import characterInfoEmbed from "./embeds/character";
+import animeInfoEmbed from "./embeds/anime";
+import mangaInfoEmbed from "./embeds/manga";
 import consola from "consola";
 
 /** Capitalizes the first letter of a string
@@ -25,7 +28,7 @@ export function baseEmbed(data: EmbedData): EmbedBuilder {
 		timestamp: new Date().toISOString(),
 		footer: {
 			text: "Made with ❤️ by Cored, Inc",
-			iconURL: client.user!.displayAvatarURL()+"?size=1024",
+			iconURL: client.user!.displayAvatarURL() + "?size=1024",
 		},
 		...data,
 	});
@@ -135,5 +138,20 @@ export async function get<T>(
 			await interaction.reply(`Error fetching data. Please try again later.`);
 		}
 		return { data: null } as unknown as T;
+	}
+}
+
+/** Chooses the correct embed function based on type
+ * @param type The type of content ("anime", "manga", or "characters")
+ * @returns The corresponding embed function
+ */
+export function chooseEmbed(type: string) {
+	switch (type) {
+		case "manga":
+			return mangaInfoEmbed;
+		case "characters":
+			return characterInfoEmbed;
+		default:
+			return animeInfoEmbed;
 	}
 }

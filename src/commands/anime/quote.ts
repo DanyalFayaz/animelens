@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { Command } from "../../classes/command";
-import type { Quote } from "../../types/quote";
-import { baseEmbed, get } from "../../util/funcs";
+import type DiscordClient from "@classes/client";
+import type { Quote } from "@interfaces/quote";
+import { baseEmbed, get } from "@util/funcs";
+import { Command } from "@classes/command";
 
 export default class QuoteCommand extends Command {
 	constructor() {
@@ -10,6 +10,7 @@ export default class QuoteCommand extends Command {
 			name: "quote",
 			description: "Get a random anime quote",
 			category: "anime",
+			cooldown: 10,
 			options: [
 				{
 					name: "show",

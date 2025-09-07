@@ -4,11 +4,11 @@ import {
 	ButtonStyle,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { Command } from "../../classes/command";
-import type { Producer } from "../../types/producer";
-import { baseEmbed, get } from "../../util/funcs";
-import { emojis } from "../../util/constants";
+import type DiscordClient from "@classes/client";
+import type { Producer } from "@interfaces/producer";
+import { baseEmbed, get } from "@util/funcs";
+import { Command } from "@classes/command";
+import { emojis } from "@util/constants";
 
 export default class ProduerCommand extends Command {
 	constructor() {
@@ -16,6 +16,7 @@ export default class ProduerCommand extends Command {
 			name: "producer",
 			description: "Get information about an anime producer",
 			category: "anime",
+			cooldown: 10,
 			options: [
 				{
 					name: "name",

@@ -1,5 +1,5 @@
+import type DiscordClient from "@classes/client";
 import consola from "consola";
-import type DiscordClient from "../classes/client";
 import { watch } from "fs";
 
 async function loadModule(file: string, fresh = false) {
