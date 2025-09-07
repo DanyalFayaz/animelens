@@ -1,4 +1,7 @@
-import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
+import {
+	ApplicationCommandOptionType,
+	type ChatInputCommandInteraction,
+} from "discord.js";
 import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
@@ -41,46 +44,54 @@ export default class ScheduleCommand extends Command {
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const day = interaction.options.getString("day", false);
 		const sfw = interaction.options.getBoolean("sfw", false) ?? false;
 
 		await interaction.deferReply();
 
-		const response = await fetch(
-			`https://api.jikan.moe/v4/schedules${day ? `?filter=${day}` : ""}${
-				sfw ? `&sfw=${sfw}` : ""
-			}`
-		);
+		const params = new URLSearchParams();
+		if (day) params.set("filter", day);
+		if (sfw) params.set("sfw", "true");
+		const url = `https://api.jikan.moe/v4/schedules${
+			params.toString() ? `?${params.toString()}` : ""
+		}`;
+		const response = await fetch(url);
 
 		if (!response.ok) {
 			await interaction.editReply(
-				"Failed to fetch anime schedule. Please try again later."
+				"Failed to fetch anime schedule. Please try again later.",
 			);
 			return;
 		}
 
 		const data = (await response.json()) as { data: Anime[] };
 		const selected = data.data
-			.sort((a,b)=> a.rank - b.rank)
+			.sort(
+				(a, b) =>
+					(a.rank ?? Number.POSITIVE_INFINITY) -
+					(b.rank ?? Number.POSITIVE_INFINITY),
+			)
 			.slice(0, 10);
 
-		const embeds = selected
-			.map((a) => ({ content: null, embeds: [animeInfoEmbed(interaction, a)] } as any));
+		const embeds = selected.map(
+			(a) =>
+				({ content: null, embeds: [animeInfoEmbed(interaction, a)] }) as any,
+		);
 		const pagination = new Pagination(interaction, embeds, {
-            selectMenu: {
-                disabled: true
-            },
-            buttons: {
-                backward: {
-                    label: "Start"
-                },
-                forward: {
-                    label: "End"
-                },
-            }
-        });
+			selectMenu: {
+				disabled: true,
+			},
+			buttons: {
+				backward: {
+					label: "Start",
+				},
+				forward: {
+					label: "End",
+				},
+			},
+		});
 		await pagination.send();
 	}
 }

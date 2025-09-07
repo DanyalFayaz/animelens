@@ -2,10 +2,10 @@ import type { CommandInteraction } from "discord.js";
 import type { Anime } from "../../types/anime";
 import { baseEmbed, capitalize } from "../funcs";
 
-export default function animeInfoEmbed(interaction: CommandInteraction, anime: Anime) {
+export default function animeInfoEmbed(interaction: CommandInteraction, anime: Anime, authorName = "Trending") {
 	return baseEmbed({
 		author: {
-			name: "Trending",
+			name: authorName,
 			iconURL: interaction.user.displayAvatarURL(),
 		},
 		title: anime.title,
