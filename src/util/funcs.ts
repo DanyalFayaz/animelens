@@ -1,4 +1,9 @@
-import { Colors, CommandInteraction, EmbedBuilder, type EmbedData } from "discord.js";
+import {
+	Colors,
+	CommandInteraction,
+	EmbedBuilder,
+	type EmbedData,
+} from "discord.js";
 import { client } from "../";
 import consola from "consola";
 
@@ -93,9 +98,13 @@ let cache: { url: string; data: unknown; expiry: number }[] = [];
  * @param expirySeconds The number of seconds after which the cached data expires
  * @returns The fetched JSON data or null on error
  */
-export async function get<T>(interaction: CommandInteraction, url: string, expirySeconds: number): Promise<T> {
+export async function get<T>(
+	interaction: CommandInteraction,
+	url: string,
+	expirySeconds: number,
+): Promise<T> {
 	const now = Date.now();
-	cache = cache.filter(c => c.expiry > now);
+	cache = cache.filter((c) => c.expiry > now);
 	const existing = cache.find((c) => c.url === url && now < c.expiry);
 
 	if (existing) {
@@ -104,6 +113,12 @@ export async function get<T>(interaction: CommandInteraction, url: string, expir
 
 	try {
 		const response = await fetch(url);
+		if (!response.ok) {
+			const body = await response.text().catch(() => "");
+			consola.error(
+				`HTTP ${response.status} ${response.statusText} - ${body?.slice(0, 200)}`,
+			);
+		}
 		const data = (await response.json()) as T;
 		cache.push({ url, data, expiry: now + expirySeconds * 1000 });
 
@@ -112,15 +127,13 @@ export async function get<T>(interaction: CommandInteraction, url: string, expir
 		consola.error(
 			`Failed to fetch data from ${url}: ${(error as Error).message}`,
 		);
-		if(interaction.replied || interaction.deferred) {
+		if (interaction.replied || interaction.deferred) {
 			await interaction.editReply(
 				`Error fetching data. Please try again later.`,
 			);
 		} else {
-			await interaction.reply(
-				`Error fetching data. Please try again later.`,
-			);
+			await interaction.reply(`Error fetching data. Please try again later.`);
 		}
-		return {data: null} as unknown as T;
+		return { data: null } as unknown as T;
 	}
 }

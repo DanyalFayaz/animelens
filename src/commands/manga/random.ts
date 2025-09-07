@@ -22,7 +22,7 @@ export default class RandomMangaCommand extends Command {
 
 		const data = await get<{ data: Manga }>(interaction, "https://api.jikan.moe/v4/random/manga", 0);
 
-		if (!data.data) {
+		if (!data?.data) {
 			return;
 		}
 
