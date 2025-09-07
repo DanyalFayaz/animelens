@@ -4,7 +4,7 @@ import type { Anime } from "../../types/anime";
 import { fetchCached } from "../../util/funcs";
 import { Pagination } from "@discordx/pagination";
 import { Command } from "../../classes/command";
-import infoEmbed from "../../util/embeds/anime";
+import animeInfoEmbed from "../../util/embeds/anime";
 
 export default class TrendingCommand extends Command {
 	constructor() {
@@ -42,7 +42,7 @@ export default class TrendingCommand extends Command {
 		const embeds = data.data
 			.slice(0, 10)
 			.map(
-				(a) => ({ content: null, embeds: [infoEmbed(interaction, a)] } as any)
+				(a) => ({ content: null, embeds: [animeInfoEmbed(interaction, a)] } as any)
 			);
 		const pagination = new Pagination(interaction, embeds);
 		await pagination.send();

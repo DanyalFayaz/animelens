@@ -4,7 +4,7 @@ import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
 import { baseEmbed, capitalize } from "../../util/funcs";
 import { Pagination } from "@discordx/pagination";
-import infoEmbed from "../../util/embeds/anime";
+import animeInfoEmbed from "../../util/embeds/anime";
 
 export default class ScheduleCommand extends Command {
 	constructor() {
@@ -67,7 +67,7 @@ export default class ScheduleCommand extends Command {
 			.slice(0, 10);
 
 		const embeds = selected
-			.map((a) => ({ content: null, embeds: [infoEmbed(interaction, a)] } as any));
+			.map((a) => ({ content: null, embeds: [animeInfoEmbed(interaction, a)] } as any));
 		const pagination = new Pagination(interaction, embeds, {
             selectMenu: {
                 disabled: true
