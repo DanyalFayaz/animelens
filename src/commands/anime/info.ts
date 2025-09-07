@@ -30,18 +30,18 @@ export default class InfoCommand extends Command {
 
 	override async execute(
 		_client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const query = interaction.options.getString("title", true);
 		await interaction.deferReply();
 
 		const response = await fetch(
-			`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=5`
+			`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=5`,
 		);
 
 		if (!response.ok) {
 			await interaction.editReply(
-				`Error fetching anime data: ${response.status} ${response.statusText}`
+				`Error fetching anime data: ${response.status} ${response.statusText}`,
 			);
 			return;
 		}
@@ -50,14 +50,14 @@ export default class InfoCommand extends Command {
 
 		if (data.data.length === 0) {
 			await interaction.editReply(
-				`No results found for anime: ${inlineCode(query)}`
+				`No results found for anime: ${inlineCode(query)}`,
 			);
 			return;
 		}
 
 		const first = data.data[0]!;
 
-		const InfoEmbed = baseEmbed({
+		const infoEmbed = baseEmbed({
 			author: { name: query, iconURL: interaction.user.displayAvatarURL() },
 			title: first.title,
 			url: first.url,
@@ -131,7 +131,7 @@ export default class InfoCommand extends Command {
 					.setLabel("View on MyAnimeList")
 					.setEmoji("<:myanimelist:1414137135082115112>")
 					.setStyle(ButtonStyle.Link)
-					.setURL(first.url)
+					.setURL(first.url),
 			);
 		}
 		if (first.trailer) {
@@ -140,17 +140,18 @@ export default class InfoCommand extends Command {
 					.setLabel("View Trailer")
 					.setEmoji("<:youtube:1414137041620570142>")
 					.setStyle(ButtonStyle.Link)
-					.setURL(first.trailer?.url ?? first.url)
+					.setURL(first.trailer?.url ?? first.url),
 			);
 		}
 
-		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-			...components
-		);
+		const rows =
+			components.length > 0
+				? [new ActionRowBuilder<ButtonBuilder>().addComponents(...components)]
+				: [];
 
 		await interaction.editReply({
-			embeds: [InfoEmbed],
-			components: row ? [row] : [],
+			embeds: [infoEmbed],
+			components: rows,
 		});
 	}
 }
