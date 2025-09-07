@@ -38,6 +38,26 @@ export default async function registerCommands(
 		})),
 	];
 
+	try {
+		const response = await fetch(`https://discordbotlist.com/api/v1/bots/${client.user!.id}/commands`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bot ${Bun.env.DB_LIST_TOKEN}`,
+			},
+			body: JSON.stringify(commandsJSON),
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			consola.error(`Failed to update commands on Discord Bot List: ${response.status} ${response.statusText} - ${errorText}`);
+		} else {
+			consola.success("Successfully updated commands on Discord Bot List");
+		}
+	} catch (error) {
+		consola.error("Error while updating commands on Discord Bot List", error);
+	}
+
 	const newTopLevelNames = commandsJSON.map((c) => c.name);
 	const appId = client.user!.id;
 

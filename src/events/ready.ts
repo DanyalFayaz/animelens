@@ -13,6 +13,7 @@ export default class ReadyEvent extends Event<"clientReady"> {
 
 	public override async execute(client: DiscordClient): Promise<void> {
 		consola.success(`Logged in as ${client.user!.username} (${client.user!.id})`);
+		consola.success(`Ready to serve ${client.users.cache.size} user(s) in ${client.guilds.cache.size} servers.`);
 		await registerCommands(client, Bun.env.NODE_ENV === "development");
 	}
 }
