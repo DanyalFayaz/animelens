@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { baseEmbed } from "../../util/funcs";
-import { Command } from "../../classes/command";
+import type DiscordClient from "@classes/client";
+import { baseEmbed } from "@util/funcs";
+import { Command } from "@classes/command";
 
 export default class PingCommand extends Command {
 	constructor() {
@@ -9,6 +9,7 @@ export default class PingCommand extends Command {
 			name: "ping",
 			description: "Check the bot's latency.",
 			category: "misc",
+			cooldown: 10
 		});
 	}
 

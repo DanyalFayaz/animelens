@@ -1,6 +1,6 @@
 import type { CommandInteraction } from "discord.js";
-import type { Anime } from "../../types/anime";
-import { baseEmbed, capitalize } from "../funcs";
+import type { Anime } from "@interfaces/anime";
+import { baseEmbed, capitalize } from "@util/funcs";
 
 export default function animeInfoEmbed(
 	interaction: CommandInteraction,
@@ -35,11 +35,6 @@ export default function animeInfoEmbed(
 				value: anime.score?.toString() ?? "N/A",
 				inline: true,
 			},
-			{
-				name: "📅 Aired",
-				value: anime.aired.string ?? "N/A",
-				inline: false,
-			},
 			{ name: "🏷️ Status", value: anime.status ?? "N/A", inline: true },
 			{
 				name: "🌐 Season",
@@ -47,6 +42,11 @@ export default function animeInfoEmbed(
 					? `${capitalize(anime.season)} ${anime.year ?? ""}`.trim()
 					: "N/A",
 				inline: true,
+			},
+			{
+				name: "📅 Aired",
+				value: anime.aired.string ?? "N/A",
+				inline: false,
 			},
 		],
 	});

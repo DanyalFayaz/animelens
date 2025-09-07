@@ -2,12 +2,12 @@ import {
 	ApplicationCommandOptionType,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import type { Anime } from "../../types/anime";
+import type DiscordClient from "@classes/client";
+import type { Anime } from "@interfaces/anime";
 import { Pagination } from "@discordx/pagination";
-import { Command } from "../../classes/command";
-import animeInfoEmbed from "../../util/embeds/anime";
-import { get } from "../../util/funcs";
+import { Command } from "@classes/command";
+import { get } from "@util/funcs";
+import animeInfoEmbed from "@util/embeds/anime";
 
 export default class SeasonCommand extends Command {
 	constructor() {
@@ -15,6 +15,7 @@ export default class SeasonCommand extends Command {
 			name: "season",
 			description: "Get anime seasonal information.",
 			category: "anime",
+			cooldown: 10,
 			options: [
 				{
 					name: "year",

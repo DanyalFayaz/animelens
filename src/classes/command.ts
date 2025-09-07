@@ -4,6 +4,7 @@ import type DiscordClient from "./client";
 export interface CommandOptions {
 	name: string;
 	description: string;
+	cooldown?: number;
 	category?: string;
 	options?: ApplicationCommandOption[];
 }
@@ -11,12 +12,14 @@ export interface CommandOptions {
 export abstract class Command {
 	public name: string;
 	public description: string;
+	public cooldown?: number;
 	public category?: string;
 	public options?: ApplicationCommandOption[];
 
 	constructor(options: CommandOptions) {
 		this.name = options.name;
 		this.description = options.description;
+		this.cooldown = options.cooldown;
 		this.category = options.category;
 		this.options = options.options;
 	}

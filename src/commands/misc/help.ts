@@ -4,10 +4,10 @@ import {
 	ButtonStyle,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import { baseEmbed, capitalize } from "../../util/funcs";
-import { Command } from "../../classes/command";
-import { emojis } from "../../util/constants";
+import type DiscordClient from "@classes/client";
+import { baseEmbed, capitalize } from "@util/funcs";
+import { Command } from "@classes/command";
+import { emojis } from "@util/constants";
 
 export default class HelpCommand extends Command {
 	constructor() {

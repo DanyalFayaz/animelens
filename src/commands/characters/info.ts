@@ -6,18 +6,20 @@ import {
 	ApplicationCommandOptionType,
 	type ChatInputCommandInteraction,
 } from "discord.js";
-import type DiscordClient from "../../classes/client";
-import type { Character } from "../../types/character";
-import { Command } from "../../classes/command";
-import { baseEmbed, formatCharAbout, get } from "../../util/funcs";
-import { emojis } from "../../util/constants";
+import characterInfoEmbed from "@util/embeds/character";
+import type { Character } from "@interfaces/character";
+import type DiscordClient from "@classes/client";
+import { Command } from "@classes/command";
+import { emojis } from "@util/constants";
+import { get } from "@util/funcs";
 
-export default class CharacterCommand extends Command {
+export default class CharactersInfoCommand extends Command {
 	constructor() {
 		super({
-			name: "character",
-			description: "Get information about an anime character",
-			category: "anime",
+			name: "info",
+			description: "Get information about a character",
+			category: "characters",
+			cooldown: 10,
 			options: [
 				{
 					name: "name",
@@ -56,35 +58,7 @@ export default class CharacterCommand extends Command {
 		}
 
 		const character = data.data[0]!;
-		const CharacterEmbed = baseEmbed({
-			author: { name: query, iconURL: interaction.user.displayAvatarURL() },
-			title: character.name,
-			url: character.url,
-			description: character.about
-				? formatCharAbout(
-						character.about.replace(/\n+\(Source: .*?\)$/, ""),
-					).substring(0, 4096)
-				: "No description available.",
-			thumbnail: { url: character.images.jpg.image_url },
-			footer: { text: "Data courtesy of MyAnimeList via Jikan API" },
-			fields: [
-				{
-					name: "🎌 Japanese Name",
-					value: character.name_kanji || "Unknown",
-					inline: true,
-				},
-				{
-					name: "🗿 Nicknames",
-					value: character.nicknames.join(", ") || "None",
-					inline: true,
-				},
-				{
-					name: "🏆 Favorites",
-					value: character.favorites.toLocaleString("en-US") || "0",
-					inline: true,
-				},
-			],
-		});
+		const CharacterEmbed = characterInfoEmbed(interaction, character);
 
 		const row = character.url
 			? new ActionRowBuilder<ButtonBuilder>().addComponents(
