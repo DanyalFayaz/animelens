@@ -25,7 +25,7 @@ export function baseEmbed(data: EmbedData): EmbedBuilder {
 		timestamp: new Date().toISOString(),
 		footer: {
 			text: "Made with ❤️ by Cored, Inc",
-			iconURL: client.user!.displayAvatarURL(),
+			iconURL: client.user!.displayAvatarURL()+"?size=1024",
 		},
 		...data,
 	});

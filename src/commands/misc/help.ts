@@ -76,17 +76,15 @@ export default class HelpCommand extends Command {
 			}
 		}
 
-		const botUser = client.user!;
-
 		const HelpEmbed = baseEmbed({
-			title: `✨ ${botUser.username} Commands & Info`,
+			title: `✨ ${client.user!.username} Commands & Info`,
 			description:
 				"Hi! I'm your anime assistant here to provide you with anime info, quotes, characters & more.\nType / and start typing a command name to see autocomplete.\nAdd me to more servers & share the love!",
 			fields:
 				fields.length > 0
 					? fields
 					: [{ name: "No commands yet", value: "Looks empty..." }],
-			thumbnail: { url: botUser.displayAvatarURL() },
+			thumbnail: { url: client.user!.displayAvatarURL()+"?size=1024" },
 		});
 
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
