@@ -46,3 +46,6 @@ npm-debug.log*
 bun.lock
 .pnpm-debug.log*
 pnpm-lock.yaml
+
+# Heroku
+Procfile
