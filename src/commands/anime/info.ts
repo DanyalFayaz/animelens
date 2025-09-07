@@ -57,7 +57,7 @@ export default class InfoCommand extends Command {
 
 		const first = data.data[0]!;
 
-		const animeInfoEmbed = baseEmbed({
+		const infoEmbed = baseEmbed({
 			author: { name: query, iconURL: interaction.user.displayAvatarURL() },
 			title: first.title,
 			url: first.url,
@@ -150,7 +150,7 @@ export default class InfoCommand extends Command {
 				: [];
 
 		await interaction.editReply({
-			embeds: [animeInfoEmbed],
+			embeds: [infoEmbed],
 			components: rows,
 		});
 	}

@@ -3,10 +3,9 @@ import {
 	type ChatInputCommandInteraction,
 } from "discord.js";
 import type DiscordClient from "../../classes/client";
-import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
-import { baseEmbed, capitalize } from "../../util/funcs";
 import { Pagination } from "@discordx/pagination";
+import { Command } from "../../classes/command";
 import animeInfoEmbed from "../../util/embeds/anime";
 
 export default class ScheduleCommand extends Command {

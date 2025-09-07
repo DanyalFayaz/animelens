@@ -1,9 +1,11 @@
-import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
+import {
+	ApplicationCommandOptionType,
+	type ChatInputCommandInteraction,
+} from "discord.js";
 import type DiscordClient from "../../classes/client";
-import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
-import { baseEmbed, capitalize } from "../../util/funcs";
 import { Pagination } from "@discordx/pagination";
+import { Command } from "../../classes/command";
 import animeInfoEmbed from "../../util/embeds/anime";
 
 export default class SeasonCommand extends Command {
@@ -37,44 +39,57 @@ export default class SeasonCommand extends Command {
 		});
 	}
 
-	    override async execute(client: DiscordClient, interaction: ChatInputCommandInteraction): Promise<void> {
-	        await interaction.deferReply();
-	        await interaction.editReply("Fetching anime seasonal information...");
-        const year = interaction.options.getInteger("year", true);
-        const season = interaction.options.getString("season", true);
+	override async execute(
+		client: DiscordClient,
+		interaction: ChatInputCommandInteraction,
+	): Promise<void> {
+		await interaction.deferReply();
+		await interaction.editReply("Fetching anime seasonal information...");
+		const year = interaction.options.getInteger("year", true);
+		const season = interaction.options.getString("season", true);
 
-        const response = await fetch(`https://api.jikan.moe/v4/seasons/${year}/${season}`);
+		const response = await fetch(
+			`https://api.jikan.moe/v4/seasons/${year}/${season}`,
+		);
 
-        if (!response.ok) {
-            await interaction.editReply("Failed to fetch seasonal information. Please try again later.");
-            return;
-        }
+		if (!response.ok) {
+			await interaction.editReply(
+				"Failed to fetch seasonal information. Please try again later.",
+			);
+			return;
+		}
 
-        const data = await response.json() as { data: Anime[] };
-        const selected = data.data.sort((a,b)=> a.rank - b.rank).slice(0, 10);
+		const data = (await response.json()) as { data: Anime[] };
+		const selected = data.data
+			.sort(
+				(a, b) =>
+					(a.rank ?? Number.POSITIVE_INFINITY) -
+					(b.rank ?? Number.POSITIVE_INFINITY),
+			)
+			.slice(0, 10);
 
-        if (selected.length === 0) {
-            await interaction.editReply(`No anime found for ${season} ${year}.`);
-            return;
-        }
+		if (selected.length === 0) {
+			await interaction.editReply(`No anime found for ${season} ${year}.`);
+			return;
+		}
 
-        
-
-		const embeds = selected
-			.map((a) => ({ content: null, embeds: [animeInfoEmbed(interaction, a)] } as any));
+		const embeds = selected.map(
+			(a) =>
+				({ content: null, embeds: [animeInfoEmbed(interaction, a)] }) as any,
+		);
 		const pagination = new Pagination(interaction, embeds, {
-            selectMenu: {
-                disabled: true
-            },
-            buttons: {
-                backward: {
-                    label: "Start"
-                },
-                forward: {
-                    label: "End"
-                },
-            }
-        });
+			selectMenu: {
+				disabled: true,
+			},
+			buttons: {
+				backward: {
+					label: "Start",
+				},
+				forward: {
+					label: "End",
+				},
+			},
+		});
 		await pagination.send();
-    }
+	}
 }

@@ -2,7 +2,7 @@ import type { ChatInputCommandInteraction } from "discord.js";
 import type DiscordClient from "../../classes/client";
 import type { Anime } from "../../types/anime";
 import { fetchCached } from "../../util/funcs";
-import { Pagination } from "@discordx/pagination";
+import { Pagination, type PaginationItem } from "@discordx/pagination";
 import { Command } from "../../classes/command";
 import animeInfoEmbed from "../../util/embeds/anime";
 
@@ -17,7 +17,7 @@ export default class TrendingCommand extends Command {
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		await interaction.deferReply();
 
@@ -25,11 +25,11 @@ export default class TrendingCommand extends Command {
 		try {
 			data = await fetchCached<{ data: Anime[] }>(
 				"https://api.jikan.moe/v4/top/anime",
-				5 * 60 * 1000
+				5 * 60 * 1000,
 			);
 		} catch (err: any) {
 			await interaction.editReply(
-				`Error fetching trending anime: ${err.message || err}`
+				`Error fetching trending anime: ${err.message || err}`,
 			);
 			return;
 		}
@@ -39,12 +39,11 @@ export default class TrendingCommand extends Command {
 			return;
 		}
 
-		const embeds = data.data
-			.slice(0, 10)
-			.map(
-				(a) => ({ content: null, embeds: [animeInfoEmbed(interaction, a)] } as any)
-			);
-		const pagination = new Pagination(interaction, embeds);
+		const pages: PaginationItem[] = data.data.slice(0, 10).map((a) => ({
+			embeds: [animeInfoEmbed(interaction, a)],
+		}));
+
+		const pagination = new Pagination(interaction, pages);
 		await pagination.send();
 	}
 }

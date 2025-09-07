@@ -2,7 +2,11 @@ import type { CommandInteraction } from "discord.js";
 import type { Anime } from "../../types/anime";
 import { baseEmbed, capitalize } from "../funcs";
 
-export default function animeInfoEmbed(interaction: CommandInteraction, anime: Anime, authorName = "Trending") {
+export default function animeInfoEmbed(
+	interaction: CommandInteraction,
+	anime: Anime,
+	authorName = "Trending",
+) {
 	return baseEmbed({
 		author: {
 			name: authorName,
@@ -15,7 +19,9 @@ export default function animeInfoEmbed(interaction: CommandInteraction, anime: A
 				?.substring(0, 4096)
 				.replace("\n\n[Written by MAL Rewrite]", "") ??
 			"No synopsis available.",
-		thumbnail: { url: anime.images.jpg.image_url },
+		thumbnail: anime.images.jpg.image_url
+			? { url: anime.images.jpg.image_url }
+			: undefined,
 		footer: { text: "Data courtesy of MyAnimeList via Jikan API" },
 		fields: [
 			{ name: "📺 Type", value: anime.type ?? "N/A", inline: true },
