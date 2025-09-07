@@ -44,7 +44,19 @@ export default class TrendingCommand extends Command {
 			embeds: [animeInfoEmbed(interaction, a)],
 		}));
 
-		const pagination = new Pagination(interaction, pages);
+		const pagination = new Pagination(interaction, pages, {
+			selectMenu: {
+				disabled: true,
+			},
+			buttons: {
+				backward: {
+					label: "Start",
+				},
+				forward: {
+					label: "End",
+				},
+			},
+		});
 		await pagination.send();
 	}
 }
