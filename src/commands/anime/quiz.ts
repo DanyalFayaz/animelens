@@ -48,7 +48,7 @@ export default class QuizCommand extends Command {
 		const data = await get<{ results: Question[] }>(
 			interaction,
 			`https://opentdb.com/api.php?amount=1&category=31&type=boolean&difficulty=${difficulty}`,
-			300
+			0
 		);
 
 		if (!data.results) {

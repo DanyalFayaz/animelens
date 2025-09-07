@@ -45,7 +45,7 @@ export default class QuoteCommand extends Command {
 			  )}&random=1`
 			: "https://yurippe.vercel.app/api/quotes?random=1";
 
-		const data = await get<Quote[]>(interaction, URL, 300);
+		const data = await get<Quote[]>(interaction, URL, 0);
 
 		if (!data) {
 			return;

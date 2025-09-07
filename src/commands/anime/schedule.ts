@@ -57,7 +57,7 @@ export default class ScheduleCommand extends Command {
 		const url = `https://api.jikan.moe/v4/schedules${
 			params.toString() ? `?${params.toString()}` : ""
 		}`;
-		const data = await get<{ data: Anime[] }>(interaction, url, 300);
+		const data = await get<{ data: Anime[] }>(interaction, url, 30);
 
 		if (!data.data) {
 			return;

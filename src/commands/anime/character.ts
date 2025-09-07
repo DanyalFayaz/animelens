@@ -43,6 +43,10 @@ export default class CharacterCommand extends Command {
 			30,
 		);
 
+		if (!data.data) {
+			return;
+		}
+
 		if (data.data.length === 0) {
 			await interaction.editReply(
 				`No characters found matching: ${inlineCode(query)}`,

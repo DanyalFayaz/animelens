@@ -38,7 +38,7 @@ export default class MangaInfoCommand extends Command {
 		const data = await get<{ data: Manga[] }>(
 			interaction,
 			`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(title)}&limit=1`,
-			300
+			30
 		);
 
 		if (!data.data) {

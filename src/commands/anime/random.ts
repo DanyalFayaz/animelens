@@ -19,7 +19,7 @@ export default class RandomCommand extends Command {
 		): Promise<void> {
 	        await interaction.deferReply();
 
-		const data = await get<{ data: Anime }>(interaction, "https://api.jikan.moe/v4/random/anime", 300);
+		const data = await get<{ data: Anime }>(interaction, "https://api.jikan.moe/v4/random/anime", 0);
 
 		if (!data.data) {
 			return;

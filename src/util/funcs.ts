@@ -93,7 +93,7 @@ let cache: { url: string; data: unknown; expiry: number }[] = [];
  * @param expirySeconds The number of seconds after which the cached data expires
  * @returns The fetched JSON data or null on error
  */
-export async function get<T>(interaction: CommandInteraction, url: string, expirySeconds: number) {
+export async function get<T>(interaction: CommandInteraction, url: string, expirySeconds: number): Promise<T> {
 	const now = Date.now();
 	cache = cache.filter(c => c.expiry > now);
 	const existing = cache.find((c) => c.url === url && now < c.expiry);

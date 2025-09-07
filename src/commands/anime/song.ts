@@ -43,7 +43,7 @@ export default class SongCommand extends Command {
 			`https://api.animethemes.moe/search?q=${encodeURIComponent(
 				query
 			)}&fields[search]=animethemes&include[animetheme]=animethemeentries.videos.audio,anime.images,song.artists,group`,
-			300
+			30
 		);
 
 		if (!data.search) {

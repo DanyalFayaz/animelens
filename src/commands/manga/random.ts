@@ -20,7 +20,7 @@ export default class RandomMangaCommand extends Command {
 		): Promise<void> {
 			await interaction.deferReply();
 
-		const data = await get<{ data: Manga }>(interaction, "https://api.jikan.moe/v4/random/manga", 300);
+		const data = await get<{ data: Manga }>(interaction, "https://api.jikan.moe/v4/random/manga", 0);
 
 		if (!data.data) {
 			return;

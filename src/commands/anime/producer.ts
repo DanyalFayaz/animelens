@@ -36,7 +36,7 @@ export default class ProduerCommand extends Command {
 		const data = await get<{ data: Producer[] }>(
 			interaction,
 			`https://api.jikan.moe/v4/producers?q=${encodeURIComponent(query)}&order_by=favorites&sort=desc&limit=5`,
-			300
+			30
 		);
 
 		if (!data.data) {

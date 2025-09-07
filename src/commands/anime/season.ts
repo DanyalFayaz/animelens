@@ -52,7 +52,7 @@ export default class SeasonCommand extends Command {
 		const data = await get<{ data: Anime[] }>(
 			interaction,
 			`https://api.jikan.moe/v4/seasons/${year}/${season}`,
-			300
+			30
 		);
 
 		if (!data.data) {

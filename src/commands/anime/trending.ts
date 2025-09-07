@@ -24,6 +24,7 @@ export default class TrendingCommand extends Command {
 		let data: { data: Anime[] };
 		try {
 			data = await get<{ data: Anime[] }>(
+				interaction,
 				"https://api.jikan.moe/v4/top/anime",
 				300,
 			);

@@ -140,7 +140,7 @@ export default class InfoCommand extends Command {
 			query,
 		)}&limit=5&${params.toString()}`;
 
-		const data = await get<{ data: Anime[] }>(interaction, URL, 300);
+		const data = await get<{ data: Anime[] }>(interaction, URL, 30);
 
 		if (!data.data) {
 			return;
