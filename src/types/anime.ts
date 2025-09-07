@@ -45,6 +45,8 @@ export interface Anime {
 	demographics: Entity[];
 }
 
+type Images = Record<"jpg" | "webp", Extension>;
+
 export interface Extension {
 	image_url: string;
 	small_image_url: string;
@@ -65,4 +67,3 @@ export interface Entity {
 	url: string;
 }
 
-type Images = Record<"jpg" | "webp", Extension>;
