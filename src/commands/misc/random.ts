@@ -38,7 +38,7 @@ export default class RandomCommand extends Command {
 		client: DiscordClient,
 		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
-        const type = interaction.options.getString("type", true);
+		const type = interaction.options.getString("type", true);
 		await interaction.deferReply();
 
 		const data = await get<{ data: Manga | Anime | Character }>(
@@ -66,13 +66,14 @@ export default class RandomCommand extends Command {
 			);
 		}
 
-		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-			...components,
-		);
+		const rows =
+			components.length > 0
+				? [new ActionRowBuilder<ButtonBuilder>().addComponents(...components)]
+				: [];
 
 		await interaction.editReply({
 			embeds: [RandomEmbed],
-			components: row ? [row] : [],
+			components: rows,
 		});
 	}
 }

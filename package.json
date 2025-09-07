@@ -9,9 +9,9 @@
 		"start": "bun run src/index.ts",
 		"build": "tsc",
 		"format": "prettier --write .",
-		"db:generate": "DATABASE_URL=./dev.db prisma generate",
-		"db:migrate": "DATABASE_URL=./dev.db prisma migrate dev",
-		"db:push": "DATABASE_URL=./dev.db prisma db push"
+		"db:generate": "cross-env DATABASE_URL=./dev.db prisma generate",
+		"db:migrate": "cross-env DATABASE_URL=./dev.db prisma migrate dev",
+		"db:push": "cross-env DATABASE_URL=./dev.db prisma db push"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.2.21",

@@ -1,6 +1,7 @@
 import {
 	ApplicationCommandOptionType,
 	ChatInputCommandInteraction,
+	MessageFlags,
 	type GuildTextBasedChannel,
 } from "discord.js";
 import type DiscordClient from "@classes/client";
@@ -68,6 +69,6 @@ export default class ReportCommand extends Command {
 			embeds: [DevReportEmbed],
 		});
 
-        await interaction.reply({ embeds: [UserReportEmbed], ephemeral: true });
+        await interaction.reply({ embeds: [UserReportEmbed], flags: [MessageFlags.Ephemeral] });
 	}
 }

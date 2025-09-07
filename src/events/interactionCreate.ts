@@ -36,48 +36,49 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 		const now = new Date();
 		const owners = Bun.env.DISCORD_OWNER_IDS?.split(",");
 
-		if (!command.cooldown) command.cooldown = 3;
-		if (owners?.includes(interaction.user.id)) command.cooldown = 0;
+		const effectiveCooldown = owners?.includes(interaction.user.id) ? 0 : (command.cooldown ?? 3);
 
-		const options = {
-			userId: interaction.user.id,
-			command: command.name,
-		};
-		const existing = await prisma.cooldown.findUnique({
-			where: {
-				userId_command: options,
-			},
-		});
-
-		if (existing && existing.expiresAt > now) {
-			const remaining = Math.ceil(
-				(existing.expiresAt.getTime() - now.getTime()) / 1000,
-			);
-			const CooldownEmbed = baseEmbed({
-				author: {
-					name: interaction.user.username,
-					iconURL: interaction.user.displayAvatarURL(),
+		if (effectiveCooldown > 0) {
+			const options = {
+				userId: interaction.user.id,
+				command: command.name,
+			};
+			const existing = await prisma.cooldown.findUnique({
+				where: {
+					userId_command: options,
 				},
-				description: `You are on cooldown. Please wait ${remaining} more second(s) before reusing the \`${command.name}\` command.`,
 			});
-			await interaction.reply({
-				embeds: [CooldownEmbed],
-				flags: [MessageFlags.Ephemeral],
-			});
-			return;
-		}
 
-		const expiresAt = new Date(Date.now() + command.cooldown * 1000);
-		await prisma.cooldown.upsert({
-			where: {
-				userId_command: options,
-			},
-			update: { expiresAt },
-			create: {
-				...options,
-				expiresAt,
-			},
-		});
+			if (existing && existing.expiresAt > now) {
+				const remaining = Math.ceil(
+					(existing.expiresAt.getTime() - now.getTime()) / 1000,
+				);
+				const CooldownEmbed = baseEmbed({
+					author: {
+						name: interaction.user.username,
+						iconURL: interaction.user.displayAvatarURL(),
+					},
+					description: `You are on cooldown. Please wait ${remaining} more second(s) before reusing the \`${command.name}\` command.`,
+				});
+				await interaction.reply({
+					embeds: [CooldownEmbed],
+					flags: [MessageFlags.Ephemeral],
+				});
+				return;
+			}
+
+			const expiresAt = new Date(Date.now() + effectiveCooldown * 1000);
+			await prisma.cooldown.upsert({
+				where: {
+					userId_command: options,
+				},
+				update: { expiresAt },
+				create: {
+					...options,
+					expiresAt,
+				},
+			});
+		}
 
 		try {
 			await command.execute(client, interaction);
@@ -86,12 +87,12 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({
 					content: "There was an error while executing this command!",
-					ephemeral: true,
+					flags: [MessageFlags.Ephemeral],
 				});
 			} else {
 				await interaction.reply({
 					content: "There was an error while executing this command!",
-					ephemeral: true,
+					flags: [MessageFlags.Ephemeral],
 				});
 			}
 		}
