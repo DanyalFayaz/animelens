@@ -2,7 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInte
 import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Anime } from "../../types/anime";
-import { baseEmbed, capitalize } from "../../util/funcs";
+import { baseEmbed, capitalize, get } from "../../util/funcs";
 
 export default class RandomCommand extends Command {
 	constructor() {
@@ -18,22 +18,13 @@ export default class RandomCommand extends Command {
 			interaction: ChatInputCommandInteraction
 		): Promise<void> {
 	        await interaction.deferReply();
-		let response: Response;
-		try {
-			response = await fetch("https://api.jikan.moe/v4/random/anime");
-		} catch (err) {
-			await interaction.editReply("Failed to fetch a random anime. Please try again later.");
+
+		const data = await get<{ data: Anime }>(interaction, "https://api.jikan.moe/v4/random/anime", 0);
+
+		if (!data.data) {
 			return;
 		}
 
-		if (!response.ok) {
-			await interaction.editReply(
-				"Failed to fetch a random anime. Please try again later."
-			);
-			return;
-		}
-
-		const data = (await response.json()) as { data: Anime };
 		const anime = data.data;
 
 		const RandomEmbed = baseEmbed({

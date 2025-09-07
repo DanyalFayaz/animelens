@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "
 import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Quote } from "../../types/quote";
-import { baseEmbed } from "../../util/funcs";
+import { baseEmbed, get } from "../../util/funcs";
 
 export default class QuoteCommand extends Command {
 	constructor() {
@@ -45,24 +45,13 @@ export default class QuoteCommand extends Command {
 			  )}&random=1`
 			: "https://yurippe.vercel.app/api/quotes?random=1";
 
-		let response: Response;
-		try {
-			response = await fetch(URL);
-		} catch (err) {
-			await interaction.editReply({ content: "Failed to fetch quote. Please try again later." });
+		const data = await get<Quote[]>(interaction, URL, 0);
+
+		if (!data) {
 			return;
 		}
 
-		if (response.status === 404) {
-			await interaction.editReply({
-				content: "No quotes found for the given show or character.",
-			});
-			return;
-		}
-
-		const data = (await response.json()) as Quote[];
-
-		if (!data || data.length === 0) {
+		if (data.length === 0) {
 			await interaction.editReply({
 				content: "No quotes found for the given show or character.",
 			});

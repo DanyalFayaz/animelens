@@ -1,8 +1,15 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, inlineCode, ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
+import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+	inlineCode,
+	ApplicationCommandOptionType,
+	type ChatInputCommandInteraction,
+} from "discord.js";
 import type DiscordClient from "../../classes/client";
 import type { Character } from "../../types/character";
 import { Command } from "../../classes/command";
-import { baseEmbed, formatCharAbout } from "../../util/funcs";
+import { baseEmbed, formatCharAbout, get } from "../../util/funcs";
 
 export default class CharacterCommand extends Command {
 	constructor() {
@@ -23,29 +30,26 @@ export default class CharacterCommand extends Command {
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const query = interaction.options.getString("name", true);
 		await interaction.deferReply();
 
-		const response = await fetch(
+		const data = await get<{ data: Character[] }>(
+			interaction,
 			`https://api.jikan.moe/v4/characters?q=${encodeURIComponent(
-				query
-			)}&order_by=favorites&sort=desc&limit=5`
+				query,
+			)}&order_by=favorites&sort=desc&limit=5`,
+			30,
 		);
 
-		if (!response.ok) {
-			await interaction.editReply(
-				`Error fetching character data: ${response.status} ${response.statusText}`
-			);
+		if (!data.data) {
 			return;
 		}
 
-		const data = (await response.json()) as { data: Character[] };
-
 		if (data.data.length === 0) {
 			await interaction.editReply(
-				`No characters found matching: ${inlineCode(query)}`
+				`No characters found matching: ${inlineCode(query)}`,
 			);
 			return;
 		}
@@ -56,7 +60,9 @@ export default class CharacterCommand extends Command {
 			title: character.name,
 			url: character.url,
 			description: character.about
-				? formatCharAbout(character.about.replace(/\n+\(Source: .*?\)$/, "")).substring(0, 4096)
+				? formatCharAbout(
+						character.about.replace(/\n+\(Source: .*?\)$/, ""),
+					).substring(0, 4096)
 				: "No description available.",
 			thumbnail: { url: character.images.jpg.image_url },
 			footer: { text: "Data courtesy of MyAnimeList via Jikan API" },
@@ -85,10 +91,13 @@ export default class CharacterCommand extends Command {
 						.setLabel("View on MyAnimeList")
 						.setEmoji("<:myanimelist:1414137135082115112>")
 						.setStyle(ButtonStyle.Link)
-						.setURL(character.url)
-			  )
+						.setURL(character.url),
+				)
 			: null;
 
-		await interaction.editReply({ embeds: [CharacterEmbed], components: row ? [row] : [] });
+		await interaction.editReply({
+			embeds: [CharacterEmbed],
+			components: row ? [row] : [],
+		});
 	}
 }

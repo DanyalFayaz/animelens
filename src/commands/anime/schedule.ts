@@ -7,6 +7,7 @@ import type { Anime } from "../../types/anime";
 import { Pagination } from "@discordx/pagination";
 import { Command } from "../../classes/command";
 import animeInfoEmbed from "../../util/embeds/anime";
+import { get } from "../../util/funcs";
 
 export default class ScheduleCommand extends Command {
 	constructor() {
@@ -56,16 +57,12 @@ export default class ScheduleCommand extends Command {
 		const url = `https://api.jikan.moe/v4/schedules${
 			params.toString() ? `?${params.toString()}` : ""
 		}`;
-		const response = await fetch(url);
+		const data = await get<{ data: Anime[] }>(interaction, url, 30);
 
-		if (!response.ok) {
-			await interaction.editReply(
-				"Failed to fetch anime schedule. Please try again later.",
-			);
+		if (!data.data) {
 			return;
 		}
 
-		const data = (await response.json()) as { data: Anime[] };
 		const selected = data.data
 			.sort(
 				(a, b) =>

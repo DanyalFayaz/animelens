@@ -9,7 +9,7 @@ import {
 import type DiscordClient from "../../classes/client";
 import { Command } from "../../classes/command";
 import type { Manga } from "../../types/manga";
-import { baseEmbed } from "../../util/funcs";
+import { baseEmbed, get } from "../../util/funcs";
 
 export default class MangaInfoCommand extends Command {
 	constructor() {
@@ -35,18 +35,16 @@ export default class MangaInfoCommand extends Command {
 		const title = interaction.options.getString("title", true);
 		await interaction.deferReply();
 
-		const response = await fetch(
-			`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(title)}&limit=1`
+		const data = await get<{ data: Manga[] }>(
+			interaction,
+			`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(title)}&limit=1`,
+			30
 		);
 
-		if (!response.ok) {
-			await interaction.editReply({
-				content: `Failed to fetch manga information. Please try again later.`,
-			});
+		if (!data.data) {
 			return;
 		}
 
-		const data = (await response.json()) as { data: Manga[] };
 		if (data.data.length === 0) {
 			await interaction.editReply({
 				content: `No manga found with the title: ${inlineCode(title)}.`,

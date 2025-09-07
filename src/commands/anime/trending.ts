@@ -1,10 +1,10 @@
 import type { ChatInputCommandInteraction } from "discord.js";
 import type DiscordClient from "../../classes/client";
 import type { Anime } from "../../types/anime";
-import { fetchCached } from "../../util/funcs";
 import { Pagination, type PaginationItem } from "@discordx/pagination";
 import { Command } from "../../classes/command";
 import animeInfoEmbed from "../../util/embeds/anime";
+import { get } from "../../util/funcs";
 
 export default class TrendingCommand extends Command {
 	constructor() {
@@ -23,9 +23,10 @@ export default class TrendingCommand extends Command {
 
 		let data: { data: Anime[] };
 		try {
-			data = await fetchCached<{ data: Anime[] }>(
+			data = await get<{ data: Anime[] }>(
+				interaction,
 				"https://api.jikan.moe/v4/top/anime",
-				5 * 60 * 1000,
+				300,
 			);
 		} catch (err: any) {
 			await interaction.editReply(

@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 import type DiscordClient from "../../classes/client";
 import type { AnimeTheme } from "../../types/theme";
-import { baseEmbed } from "../../util/funcs";
+import { baseEmbed, get } from "../../util/funcs";
 import { Command } from "../../classes/command";
 
 export default class SongCommand extends Command {
@@ -36,22 +36,19 @@ export default class SongCommand extends Command {
 		const query = interaction.options.getString("title", true);
 		await interaction.deferReply();
 
-		const response = await fetch(
+		const data = await get<{
+			search: { animethemes: AnimeTheme[] };
+		}>(
+			interaction,
 			`https://api.animethemes.moe/search?q=${encodeURIComponent(
 				query
-			)}&fields[search]=animethemes&include[animetheme]=animethemeentries.videos.audio,anime.images,song.artists,group`
+			)}&fields[search]=animethemes&include[animetheme]=animethemeentries.videos.audio,anime.images,song.artists,group`,
+			30
 		);
 
-		if (!response.ok) {
-			await interaction.editReply(
-				`Error fetching anime song data: ${response.status} ${response.statusText}`
-			);
+		if (!data.search) {
 			return;
 		}
-
-		const data = (await response.json()) as {
-			search: { animethemes: AnimeTheme[] };
-		};
 
 		if (data.search.animethemes.length === 0) {
 			await interaction.editReply(
