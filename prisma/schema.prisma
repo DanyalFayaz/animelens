@@ -20,3 +20,18 @@ model Cooldown {
 
   @@unique([userId, command])
 }
+
+model User {
+  id              String    @id
+  malId           String   @unique
+  malUsername     String
+  malAccessToken  String
+  malRefreshToken String
+  malExpiresAt    DateTime
+}
+
+model AuthSession {
+  discordId String   @id
+  verifier  String
+  createdAt DateTime @default(now())
+}

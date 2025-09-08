@@ -11,7 +11,7 @@ import type { Manga } from "@interfaces/manga";
 import type { Anime } from "@interfaces/anime";
 import { chooseEmbed, get } from "@util/funcs";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { apis, emojis } from "@util/constants";
 
 export default class RandomCommand extends Command {
 	constructor() {
@@ -43,7 +43,7 @@ export default class RandomCommand extends Command {
 
 		const data = await get<{ data: Manga | Anime | Character }>(
 			interaction,
-			`https://api.jikan.moe/v4/random/${type}`,
+			`${apis.jikan}/random/${type}`,
 			0,
 		);
 

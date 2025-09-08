@@ -8,6 +8,7 @@ import { Pagination } from "@discordx/pagination";
 import { Command } from "@classes/command";
 import { get } from "@util/funcs";
 import animeInfoEmbed from "@util/embeds/anime";
+import { apis } from "@util/constants";
 
 export default class SeasonCommand extends Command {
 	constructor() {
@@ -52,7 +53,7 @@ export default class SeasonCommand extends Command {
 
 		const data = await get<{ data: Anime[] }>(
 			interaction,
-			`https://api.jikan.moe/v4/seasons/${year}/${season}`,
+			`${apis.jikan}/seasons/${year}/${season}`,
 			30
 		);
 

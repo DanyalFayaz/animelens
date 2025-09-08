@@ -8,6 +8,7 @@ import { Pagination } from "@discordx/pagination";
 import { Command } from "@classes/command";
 import { get } from "@util/funcs";
 import animeInfoEmbed from "@util/embeds/anime";
+import { apis } from "@util/constants";
 
 export default class ScheduleCommand extends Command {
 	constructor() {
@@ -55,7 +56,7 @@ export default class ScheduleCommand extends Command {
 		const params = new URLSearchParams();
 		if (day) params.set("filter", day);
 		if (sfw) params.set("sfw", "true");
-		const url = `https://api.jikan.moe/v4/schedules${
+		const url = `${apis.jikan}/schedules${
 			params.toString() ? `?${params.toString()}` : ""
 		}`;
 		const data = await get<{ data: Anime[] }>(interaction, url, 30);

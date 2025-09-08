@@ -10,6 +10,7 @@ import type { Manga } from "@interfaces/manga";
 import type { Anime } from "@interfaces/anime";
 import { chooseEmbed, get } from "@util/funcs";
 import { Command } from "@classes/command";
+import { apis } from "@util/constants";
 
 export default class TrendingCommand extends Command {
 	constructor() {
@@ -41,7 +42,7 @@ export default class TrendingCommand extends Command {
 
 		const data = await get<{ data: Anime[] | Manga[] | Character[] }>(
 			interaction,
-			`https://api.jikan.moe/v4/top/${query}`,
+			`${apis.jikan}/top/${query}`,
 			300,
 		);
 

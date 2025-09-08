@@ -11,7 +11,7 @@ import type DiscordClient from "@classes/client";
 import type { AnimeTheme } from "@interfaces/theme";
 import { baseEmbed, get } from "@util/funcs";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { apis, emojis } from "@util/constants";
 
 export default class SongCommand extends Command {
 	constructor() {
@@ -42,7 +42,7 @@ export default class SongCommand extends Command {
 			search: { animethemes: AnimeTheme[] };
 		}>(
 			interaction,
-			`https://api.animethemes.moe/search?q=${encodeURIComponent(
+			`${apis.animethemes}/search?q=${encodeURIComponent(
 				query
 			)}&fields[search]=animethemes&include[animetheme]=animethemeentries.videos.audio,anime.images,song.artists,group`,
 			30
