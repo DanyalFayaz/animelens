@@ -25,8 +25,8 @@ export default class ReadyEvent extends Event<"clientReady"> {
 		);
 		await registerCommands(client, Bun.env.NODE_ENV === "development");
 
-		app.listen(Bun.env.SERVER_PORT, () => {
-			consola.success(`Server running on port ${Bun.env.SERVER_PORT}`);
+		app.listen(Bun.env.PORT, () => {
+			consola.success(`Server running on port ${Bun.env.PORT}`);
 		});
 	}
 }
