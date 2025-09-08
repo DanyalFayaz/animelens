@@ -54,7 +54,7 @@ export default class SeasonCommand extends Command {
 		const data = await get<{ data: Anime[] }>(
 			interaction,
 			`${apis.jikan}/seasons/${year}/${season}`,
-			30
+			30,
 		);
 
 		if (!data.data) {

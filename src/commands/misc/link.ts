@@ -34,6 +34,6 @@ export default class LinkCommand extends Command {
 			description: "Click the button below to link your MyAnimeList account.",
 		});
 
-        await interaction.reply({ embeds: [LinkEmbed], components: [row] });
+		await interaction.reply({ embeds: [LinkEmbed], components: [row] });
 	}
 }

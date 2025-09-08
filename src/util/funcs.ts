@@ -106,7 +106,7 @@ export async function get<T>(
 	interaction: CommandInteraction,
 	url: string,
 	expirySeconds: number,
-	headers?: Record<string, string>
+	headers?: Record<string, string>,
 ): Promise<T> {
 	const now = Date.now();
 	cache = cache.filter((c) => c.expiry > now);

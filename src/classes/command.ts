@@ -1,4 +1,7 @@
-import type { ChatInputCommandInteraction, ApplicationCommandOption } from "discord.js";
+import type {
+	ChatInputCommandInteraction,
+	ApplicationCommandOption,
+} from "discord.js";
 import type DiscordClient from "./client";
 import type { User } from "@util/db/generated/prisma";
 
@@ -31,7 +34,7 @@ export abstract class Command {
 	abstract execute(
 		client: DiscordClient,
 		interaction: ChatInputCommandInteraction,
-		user?: User
+		user?: User,
 	): Promise<void>;
 
 	toJSON() {

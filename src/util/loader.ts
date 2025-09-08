@@ -8,16 +8,23 @@ async function loadModule(file: string, fresh = false) {
 	return module.default ? new module.default() : null;
 }
 
-async function loadFiles(client: DiscordClient, pattern: string, isEvent = false, fresh = false) {
+async function loadFiles(
+	client: DiscordClient,
+	pattern: string,
+	isEvent = false,
+	fresh = false,
+) {
 	const glob = new Bun.Glob(pattern);
 	for (const file of glob.scanSync(".")) {
 		try {
 			const item = await loadModule(file, fresh);
 			if (!item?.name) continue;
-			
+
 			if (isEvent) {
 				client.removeAllListeners(item.name);
-				client[item.once ? "once" : "on"](item.name, (...args) => item.execute(client, ...args));
+				client[item.once ? "once" : "on"](item.name, (...args) =>
+					item.execute(client, ...args),
+				);
 				client.events.set(item.name, item);
 			} else {
 				// Use composite key when category exists so we can distinguish subcommands

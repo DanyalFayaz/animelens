@@ -21,12 +21,14 @@ A powerful Discord bot for anime and manga enthusiasts! Get instant information 
 ### Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/unloopedmido/animelens.git
    cd animelens
    ```
 
 2. **Install dependencies**
+
    ```bash
    bun install
    ```
@@ -36,6 +38,7 @@ A powerful Discord bot for anime and manga enthusiasts! Get instant information 
    Locale the `.env.example` file and rename it to `.env`. Then, fill in your Discord bot token and other configurations. Keep in mind some are optional for now.
 
 4. **Build and run**
+
    ```bash
    # Development mode (with hot reload)
    bun run dev
@@ -121,4 +124,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ for anime fans, by anime fans**
 
-*This project is not affiliated with MyAnimeList, AnimeThemes, Jikan, or any anime streaming services.*
+_This project is not affiliated with MyAnimeList, AnimeThemes, Jikan, or any anime streaming services._

@@ -19,8 +19,9 @@ export async function exchangeCodeForTokens(code: string, verifier: string) {
 		}),
 	});
 
-	const data = await res.json() as TokenResponse;
-	if (!res.ok) consola.error(res.statusText || "Failed to exchange code for tokens");
+	const data = (await res.json()) as TokenResponse;
+	if (!res.ok)
+		consola.error(res.statusText || "Failed to exchange code for tokens");
 
 	return data;
 }
@@ -37,7 +38,7 @@ export async function refreshTokens(refreshToken: string) {
 		}),
 	});
 
-	const data = await res.json() as TokenResponse;
+	const data = (await res.json()) as TokenResponse;
 	if (!res.ok) consola.error(res.statusText || "Failed to refresh tokens");
 
 	return data;
@@ -48,7 +49,7 @@ export async function fetchMalUser(accessToken: string) {
 		headers: { Authorization: `Bearer ${accessToken}` },
 	});
 
-	const data = await res.json() as MalUser;
+	const data = (await res.json()) as MalUser;
 	if (!res.ok) consola.error(res.statusText || "Failed to fetch MAL user");
 
 	return data;

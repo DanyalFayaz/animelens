@@ -66,4 +66,3 @@ export interface Entity {
 	name: string;
 	url: string;
 }
-

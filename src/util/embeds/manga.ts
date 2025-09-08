@@ -4,7 +4,7 @@ import type { Manga } from "@interfaces/manga";
 
 export default function mangaInfoEmbed(
 	interaction: CommandInteraction,
-	manga: Manga
+	manga: Manga,
 ) {
 	return baseEmbed({
 		author: { name: "Random", iconURL: interaction.user.displayAvatarURL() },

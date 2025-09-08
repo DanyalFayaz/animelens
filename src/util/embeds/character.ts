@@ -5,7 +5,7 @@ import { baseEmbed, formatCharAbout } from "@util/funcs";
 export default function characterInfoEmbed(
 	interaction: CommandInteraction,
 	character: Character,
-    authorName = "Character",
+	authorName = "Character",
 ) {
 	return baseEmbed({
 		author: { name: authorName, iconURL: interaction.user.displayAvatarURL() },
