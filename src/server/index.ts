@@ -14,8 +14,10 @@ app.get("/link-mal/:discordId", async (req, res) => {
 	const verifier = generateVerifier();
 	const challenge = generateChallenge(verifier);
 
-	const session = await prisma.authSession.create({
-		data: { discordId, verifier },
+	const session = await prisma.authSession.upsert({
+		where: { discordId },
+		update: { verifier },
+		create: { discordId, verifier },
 	});
 
 	const url = new URL("https://myanimelist.net/v1/oauth2/authorize");
