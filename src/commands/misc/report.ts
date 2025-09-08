@@ -2,7 +2,6 @@ import {
 	ApplicationCommandOptionType,
 	ChatInputCommandInteraction,
 	MessageFlags,
-	type GuildTextBasedChannel,
 } from "discord.js";
 import type DiscordClient from "@classes/client";
 import { baseEmbed } from "@util/funcs";
@@ -39,10 +38,6 @@ export default class ReportCommand extends Command {
 		const issue = interaction.options.getString("issue", true);
 		const image = interaction.options.getString("image", false);
 
-		const reportsChannel = client.channels.cache.get(
-			Bun.env.SUPPORT_CHANNEL_ID as string,
-		);
-
 		const UserReportEmbed = baseEmbed({
 			title: "Issue Reported",
 			description:
@@ -63,12 +58,17 @@ export default class ReportCommand extends Command {
 			footer: {
 				text: `Reported at ${new Date().toLocaleString()} in ${interaction.guild?.name} (${interaction.guildId})`,
 			},
+		}).toJSON();
+
+		await fetch(Bun.env.SUPPORT_WEBHOOK_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ embeds: [DevReportEmbed] }),
 		});
 
-		await (reportsChannel as GuildTextBasedChannel).send({
-			embeds: [DevReportEmbed],
+		await interaction.reply({
+			embeds: [UserReportEmbed],
+			flags: [MessageFlags.Ephemeral],
 		});
-
-        await interaction.reply({ embeds: [UserReportEmbed], flags: [MessageFlags.Ephemeral] });
 	}
 }
