@@ -5,5 +5,5 @@ export function generateVerifier() {
 }
 
 export function generateChallenge(verifier: string) {
-	return crypto.createHash("sha256").update(verifier).digest("base64url");
+	return verifier;
 }
