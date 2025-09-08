@@ -11,7 +11,7 @@ import type DiscordClient from "@classes/client";
 import type { AnimeTheme } from "@interfaces/theme";
 import { baseEmbed, get } from "@util/funcs";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { apis, emojis } from "@util/constants";
 
 export default class SongCommand extends Command {
 	constructor() {
@@ -33,7 +33,7 @@ export default class SongCommand extends Command {
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const query = interaction.options.getString("title", true);
 		await interaction.deferReply();
@@ -42,10 +42,10 @@ export default class SongCommand extends Command {
 			search: { animethemes: AnimeTheme[] };
 		}>(
 			interaction,
-			`https://api.animethemes.moe/search?q=${encodeURIComponent(
-				query
+			`${apis.animethemes}/search?q=${encodeURIComponent(
+				query,
 			)}&fields[search]=animethemes&include[animetheme]=animethemeentries.videos.audio,anime.images,song.artists,group`,
-			30
+			30,
 		);
 
 		if (!data.search) {
@@ -54,7 +54,7 @@ export default class SongCommand extends Command {
 
 		if (data.search.animethemes.length === 0) {
 			await interaction.editReply(
-				`No results found for anime song: ${inlineCode(query)}`
+				`No results found for anime song: ${inlineCode(query)}`,
 			);
 			return;
 		}
@@ -85,8 +85,8 @@ export default class SongCommand extends Command {
 						first.type === "OP"
 							? `Opening ${first.sequence ?? ""}`
 							: first.type === "ED"
-							? `Ending ${first.sequence ?? ""}`
-							: `Insert ${first.sequence ?? ""}`,
+								? `Ending ${first.sequence ?? ""}`
+								: `Insert ${first.sequence ?? ""}`,
 					inline: true,
 				},
 				{
@@ -107,7 +107,7 @@ export default class SongCommand extends Command {
 					.setLabel("Watch on AniThemes")
 					.setEmoji(emojis.animethemes)
 					.setStyle(ButtonStyle.Link)
-					.setURL(songURL)
+					.setURL(songURL),
 			);
 		}
 		components.push(
@@ -117,8 +117,8 @@ export default class SongCommand extends Command {
 				.setStyle(ButtonStyle.Link)
 				.setURL(
 					`https://www.youtube.com/results?search_query=${encodeURIComponent(
-						`${first.song.title} ${first.anime.name || ""}`.trim()
-					)}`
+						`${first.song.title} ${first.anime.name || ""}`.trim(),
+					)}`,
 				),
 			new ButtonBuilder()
 				.setLabel("Spotify Search")
@@ -126,13 +126,13 @@ export default class SongCommand extends Command {
 				.setStyle(ButtonStyle.Link)
 				.setURL(
 					`https://open.spotify.com/search/${encodeURIComponent(
-						`${first.song.title} ${first.anime.name || ""}`.trim()
-					)}`
-				)
+						`${first.song.title} ${first.anime.name || ""}`.trim(),
+					)}`,
+				),
 		);
 
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-			...components
+			...components,
 		);
 
 		await interaction.editReply({

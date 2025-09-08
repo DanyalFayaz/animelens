@@ -3,7 +3,7 @@ export interface Manga {
 	url: string;
 	images: Images;
 	approved: boolean;
-	titles: {type:string,title:string}[];
+	titles: { type: string; title: string }[];
 	title: string;
 	title_english: string;
 	title_japanese: string;

@@ -10,7 +10,7 @@ import characterInfoEmbed from "@util/embeds/character";
 import type { Character } from "@interfaces/character";
 import type DiscordClient from "@classes/client";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { apis, emojis } from "@util/constants";
 import { get } from "@util/funcs";
 
 export default class CharactersInfoCommand extends Command {
@@ -40,7 +40,7 @@ export default class CharactersInfoCommand extends Command {
 
 		const data = await get<{ data: Character[] }>(
 			interaction,
-			`https://api.jikan.moe/v4/characters?q=${encodeURIComponent(
+			`${apis.jikan}/characters?q=${encodeURIComponent(
 				query,
 			)}&order_by=favorites&sort=desc&limit=5`,
 			30,

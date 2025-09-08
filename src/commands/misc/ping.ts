@@ -9,13 +9,13 @@ export default class PingCommand extends Command {
 			name: "ping",
 			description: "Check the bot's latency.",
 			category: "misc",
-			cooldown: 10
+			cooldown: 10,
 		});
 	}
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const start = Date.now();
 		await interaction.deferReply();

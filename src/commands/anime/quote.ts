@@ -1,4 +1,7 @@
-import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
+import {
+	ApplicationCommandOptionType,
+	type ChatInputCommandInteraction,
+} from "discord.js";
 import type DiscordClient from "@classes/client";
 import type { Quote } from "@interfaces/quote";
 import { baseEmbed, get } from "@util/funcs";
@@ -28,23 +31,23 @@ export default class QuoteCommand extends Command {
 		});
 	}
 
-		override async execute(
-			client: DiscordClient,
-			interaction: ChatInputCommandInteraction
-		): Promise<void> {
-			await interaction.deferReply();
+	override async execute(
+		client: DiscordClient,
+		interaction: ChatInputCommandInteraction,
+	): Promise<void> {
+		await interaction.deferReply();
 		const show = interaction.options.getString("show", false);
 		const character = interaction.options.getString("character", false);
 
 		const URL = show
 			? `https://yurippe.vercel.app/api/quotes?show=${encodeURIComponent(
-					show
-			  )}&random=1`
+					show,
+				)}&random=1`
 			: character
-			? `https://yurippe.vercel.app/api/quotes?character=${encodeURIComponent(
-					character
-			  )}&random=1`
-			: "https://yurippe.vercel.app/api/quotes?random=1";
+				? `https://yurippe.vercel.app/api/quotes?character=${encodeURIComponent(
+						character,
+					)}&random=1`
+				: "https://yurippe.vercel.app/api/quotes?random=1";
 
 		const data = await get<Quote[]>(interaction, URL, 0);
 

@@ -10,7 +10,7 @@ import type DiscordClient from "@classes/client";
 import type { Anime } from "@interfaces/anime";
 import { baseEmbed, capitalize, get } from "@util/funcs";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { apis, emojis } from "@util/constants";
 
 export default class InfoCommand extends Command {
 	constructor() {
@@ -138,7 +138,7 @@ export default class InfoCommand extends Command {
 		if (status) params.append("status", status);
 		if (type) params.append("type", type);
 		if (rating) params.append("rating", rating);
-		const URL = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(
+		const URL = `${apis.jikan}/anime?q=${encodeURIComponent(
 			query,
 		)}&limit=5&${params.toString()}`;
 

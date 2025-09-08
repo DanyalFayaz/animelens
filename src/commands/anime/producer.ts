@@ -8,7 +8,7 @@ import type DiscordClient from "@classes/client";
 import type { Producer } from "@interfaces/producer";
 import { baseEmbed, get } from "@util/funcs";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { apis, emojis } from "@util/constants";
 
 export default class ProduerCommand extends Command {
 	constructor() {
@@ -37,8 +37,8 @@ export default class ProduerCommand extends Command {
 
 		const data = await get<{ data: Producer[] }>(
 			interaction,
-			`https://api.jikan.moe/v4/producers?q=${encodeURIComponent(query)}&order_by=favorites&sort=desc&limit=5`,
-			30
+			`${apis.jikan}/producers?q=${encodeURIComponent(query)}&order_by=favorites&sort=desc&limit=5`,
+			30,
 		);
 
 		if (!data.data) {

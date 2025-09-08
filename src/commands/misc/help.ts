@@ -19,10 +19,10 @@ export default class HelpCommand extends Command {
 
 	override async execute(
 		client: DiscordClient,
-		interaction: ChatInputCommandInteraction
+		interaction: ChatInputCommandInteraction,
 	): Promise<void> {
 		const visibleCommands = Array.from(client.commands.values()).filter(
-			(cmd) => cmd.category !== "admin" && cmd.category !== "owner"
+			(cmd) => cmd.category !== "admin" && cmd.category !== "owner",
 		);
 
 		const grouped = new Map<string, Command[]>();
@@ -33,7 +33,7 @@ export default class HelpCommand extends Command {
 		}
 
 		const sortedCategories = Array.from(grouped.keys()).sort((a, b) =>
-			a.localeCompare(b)
+			a.localeCompare(b),
 		);
 		for (const cat of sortedCategories) {
 			grouped.get(cat)!.sort((a, b) => a.name.localeCompare(b.name));
@@ -46,7 +46,8 @@ export default class HelpCommand extends Command {
 		for (const cat of sortedCategories) {
 			const cmds = grouped.get(cat)!;
 			const lines = cmds.map(
-				(c) => `• \`/${cat.length > 0 ? cat + " " : ""}${c.name}\` — ${truncate(c.description, 70)}`
+				(c) =>
+					`• \`/${cat.length > 0 ? cat + " " : ""}${c.name}\` — ${truncate(c.description, 70)}`,
 			);
 			let value = lines.join("\n");
 			if (value.length > 1024) {
@@ -84,7 +85,7 @@ export default class HelpCommand extends Command {
 				fields.length > 0
 					? fields
 					: [{ name: "No commands yet", value: "Looks empty..." }],
-			thumbnail: { url: client.user!.displayAvatarURL()+"?size=1024" },
+			thumbnail: { url: client.user!.displayAvatarURL() + "?size=1024" },
 		});
 
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -92,7 +93,7 @@ export default class HelpCommand extends Command {
 				.setLabel("View on Github")
 				.setEmoji(emojis.github)
 				.setStyle(ButtonStyle.Link)
-				.setURL(Bun.env.GITHUB_REPO_URL!)
+				.setURL(Bun.env.GITHUB_REPO_URL!),
 		);
 
 		await interaction.reply({ embeds: [HelpEmbed], components: [row] });

@@ -3,6 +3,7 @@ import {
 	CommandInteraction,
 	EmbedBuilder,
 	type EmbedData,
+	type InteractionReplyOptions,
 } from "discord.js";
 import { client } from "../";
 import characterInfoEmbed from "./embeds/character";
@@ -105,6 +106,7 @@ export async function get<T>(
 	interaction: CommandInteraction,
 	url: string,
 	expirySeconds: number,
+	headers?: Record<string, string>,
 ): Promise<T> {
 	const now = Date.now();
 	cache = cache.filter((c) => c.expiry > now);
@@ -115,7 +117,7 @@ export async function get<T>(
 	}
 
 	try {
-		const response = await fetch(url);
+		const response = await fetch(url, { headers });
 		if (!response.ok) {
 			const body = await response.text().catch(() => "");
 			consola.error(
@@ -130,13 +132,10 @@ export async function get<T>(
 		consola.error(
 			`Failed to fetch data from ${url}: ${(error as Error).message}`,
 		);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.editReply(
-				`Error fetching data. Please try again later.`,
-			);
-		} else {
-			await interaction.reply(`Error fetching data. Please try again later.`);
-		}
+		await replyOrFollowUp(interaction)({
+			content: `Error fetching data. Please try again later.`,
+			flags: ["Ephemeral"],
+		});
 		return { data: null } as unknown as T;
 	}
 }
@@ -154,4 +153,16 @@ export function chooseEmbed(type: string) {
 		default:
 			return animeInfoEmbed;
 	}
+}
+
+/** Chooses whether to reply or follow up to an interaction
+ * @param interaction The command interaction
+ * @returns The appropriate reply or followUp function
+ */
+export function replyOrFollowUp(interaction: CommandInteraction) {
+	if (interaction.replied || interaction.deferred) {
+		return interaction.followUp;
+	}
+
+	return interaction.reply;
 }

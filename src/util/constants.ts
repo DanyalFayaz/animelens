@@ -5,3 +5,9 @@ export const emojis = {
 	animethemes: "<:animethemes:1414137799313064019>",
 	myanimelist: "<:myanimelist:1414137135082115112>",
 };
+
+export const apis = {
+	myanimelist: "https://api.myanimelist.net/v2",
+	animethemes: "https://api.animethemes.moe",
+	jikan: "https://api.jikan.moe/v4",
+};

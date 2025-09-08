@@ -1,1 +1,1 @@
-worker: bun run src/index.ts
+web: bun run src/index.ts
