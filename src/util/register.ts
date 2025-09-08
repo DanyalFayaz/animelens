@@ -3,6 +3,7 @@ import type DiscordClient from "@classes/client";
 import { REST, Routes, ApplicationCommandOptionType } from "discord.js";
 import { capitalize } from "./funcs";
 import consola from "consola";
+import { apis } from "./constants";
 
 const rest = new REST({ version: "10" }).setToken(
 	Bun.env.DISCORD_CLIENT_TOKEN as string,
@@ -41,7 +42,7 @@ export default async function registerCommands(
 	if (!dev && Bun.env.DB_LIST_TOKEN)
 		try {
 			const response = await fetch(
-				`https://discordbotlist.com/api/v1/bots/${client.user!.id}/commands`,
+				`${apis.discordbotlist}/bots/${client.user!.id}/commands`,
 				{
 					method: "POST",
 					headers: {
