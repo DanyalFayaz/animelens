@@ -33,12 +33,7 @@ A powerful Discord bot for anime and manga enthusiasts! Get instant information 
 
 3. **Configure environment variables**
 
-   Create a `.env` file in the root directory:
-   ```env
-   DISCORD_CLIENT_TOKEN=your_bot_token_here
-   DISCORD_GUILD_ID=your_guild_id_here  # Optional: for faster command registration in development
-   NODE_ENV=development  # or production
-   ```
+   Locale the `.env.example` file and rename it to `.env`. Then, fill in your Discord bot token and other configurations. Keep in mind some are optional for now.
 
 4. **Build and run**
    ```bash
@@ -58,7 +53,7 @@ AnimeLens is built with a modular architecture to ensure scalability and maintai
 - **Commands**: Organized in `src/commands/` by category (anime, manga, misc), each command extends the base `Command` class.
 - **Events**: Handled in `src/events/`, managing Discord interactions and bot lifecycle.
 - **Utilities**: Helper functions and loaders in `src/util/` for registration and embedding.
-- **Types**: TypeScript definitions in `src/types/` for API responses and data structures.
+- **Types**: TypeScript definitions in `src/interfaces/` for API responses and data structures.
 
 The bot uses the Jikan API (unofficial MyAnimeList API) for fetching anime and manga data, and AnimeThemes API for theme songs.
 
