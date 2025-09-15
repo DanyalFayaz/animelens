@@ -12,4 +12,5 @@ export const apis = {
 	jikan: "https://api.jikan.moe/v4",
 	discordbotsgg: "https://discord.bots.gg/api/v1",
 	discordbotlist: "https://discordbotlist.com/api/v1",
+	topgg: "https://top.gg/api"
 };

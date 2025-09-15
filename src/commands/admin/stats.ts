@@ -19,7 +19,10 @@ export default class StatsCommand extends Command {
 		user?: User,
 	): Promise<void> {
 		const guildCount = client.guilds.cache.size;
-		const userCount = client.users.cache.size;
+		const reportedUserCount = client.guilds.cache.reduce(
+			(acc, g) => acc + (g.memberCount ?? 0),
+			0,
+		);
 		const shardCount = client.shard?.count ?? 1;
 		const uptime = process.uptime();
 		const memoryUsage = process.memoryUsage().heapUsed / 1024 / 1024;
@@ -33,8 +36,8 @@ export default class StatsCommand extends Command {
 					inline: true,
 				},
 				{
-					name: "👥 Users",
-					value: userCount.toLocaleString("en-US"),
+					name: "👥 Users (approx.)",
+					value: reportedUserCount.toLocaleString("en-US"),
 					inline: true,
 				},
 				{ name: "🛡️ Shards", value: shardCount.toString(), inline: true },
@@ -51,6 +54,6 @@ export default class StatsCommand extends Command {
 			],
 		});
 
-        await interaction.reply({ embeds: [StatsEmbed] });
+		await interaction.reply({ embeds: [StatsEmbed] });
 	}
 }

@@ -166,3 +166,37 @@ export function replyOrFollowUp(interaction: CommandInteraction) {
 
 	return interaction.reply;
 }
+
+interface UpdateParams {
+	url: string;
+	name: string;
+	json: unknown[];
+	authHeader: string;
+}
+
+/** Registers or prunes slash commands with discord bot lists
+ * @param options The update parameters
+ */
+export async function updateCommands(options: UpdateParams) {
+	try {
+		const response = await fetch(options.url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: options.authHeader,
+			},
+			body: JSON.stringify(options.json),
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			consola.error(
+				`Failed to update commands on ${options.name}: ${response.status} ${response.statusText} - ${errorText}`,
+			);
+		} else {
+			consola.success(`Successfully updated commands on ${options.name}`);
+		}
+	} catch (err) {
+		consola.error(`Error while updating commands on ${options.name}`, err);
+	}
+}

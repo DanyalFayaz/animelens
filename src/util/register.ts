@@ -1,7 +1,7 @@
 import type { Command } from "@classes/command";
 import type DiscordClient from "@classes/client";
 import { REST, Routes, ApplicationCommandOptionType } from "discord.js";
-import { capitalize } from "./funcs";
+import { capitalize, updateCommands } from "./funcs";
 import consola from "consola";
 import { apis } from "./constants";
 
@@ -39,31 +39,21 @@ export default async function registerCommands(
 		})),
 	];
 
-	if (!dev && Bun.env.DB_LIST_TOKEN)
-		try {
-			const response = await fetch(
-				`${apis.discordbotlist}/bots/${client.user!.id}/commands`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bot ${Bun.env.DB_LIST_TOKEN}`,
-					},
-					body: JSON.stringify(commandsJSON),
-				},
-			);
+	if (!dev && Bun.env.TOP_GG_TOKEN)
+		updateCommands({
+			url: `${apis.topgg}/v1/projects/@me/commands`,
+			authHeader: `Bearer ${Bun.env.TOP_GG_TOKEN}`,
+			name: "Top.gg",
+			json: commandsJSON,
+		});
 
-			if (!response.ok) {
-				const errorText = await response.text();
-				consola.error(
-					`Failed to update commands on Discord Bot List: ${response.status} ${response.statusText} - ${errorText}`,
-				);
-			} else {
-				consola.success("Successfully updated commands on Discord Bot List");
-			}
-		} catch (error) {
-			consola.error("Error while updating commands on Discord Bot List", error);
-		}
+	if (!dev && Bun.env.DB_LIST_TOKEN)
+		updateCommands({
+			url: `${apis.discordbotlist}/bots/${client.user!.id}/commands`,
+			authHeader: `Bot ${Bun.env.DB_LIST_TOKEN}`,
+			name: "Discord Bot List",
+			json: commandsJSON,
+		});
 
 	const newTopLevelNames = commandsJSON.map((c) => c.name);
 	const appId = client.user!.id;
