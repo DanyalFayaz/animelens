@@ -53,12 +53,6 @@ export default class QuizCommand extends Command {
 			return;
 		}
 
-		if (data.results.length === 0) {
-			await interaction.editReply({
-				content: `No quiz questions available. Please try again later.`,
-			});
-			return;
-		}
 		const question = data.results[0]!;
 
 		const difficultyBadges: Record<string, string> = {

@@ -34,6 +34,19 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 		);
 		const isOwner = owners.has(interaction.user.id);
 
+		if (command.category === "owner" && !isOwner) {
+			const NoPermissionEmbed = baseEmbed({
+				title: "No permission",
+				description: "You do not have permission to use this command.",
+			});
+
+			await replyOrFollowUp(interaction)({
+				embeds: [NoPermissionEmbed],
+				ephemeral: true,
+			});
+			return;
+		}
+
 		try {
 			let userRecord = null;
 			if (command.authentication) {

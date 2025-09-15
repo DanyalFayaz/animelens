@@ -97,12 +97,12 @@ export default class InfoCommand extends Command {
 		const query = interaction.options.getString("title", true);
 		await interaction.deferReply();
 
-		const minScore = interaction.options.getString("min_score");
-		const maxScore = interaction.options.getString("max_score");
-		const sfw = interaction.options.getBoolean("sfw");
-		const status = interaction.options.getString("status");
-		const type = interaction.options.getString("type");
-		const rating = interaction.options.getString("rating");
+		const minScore = interaction.options.getString("min_score", false);
+		const maxScore = interaction.options.getString("max_score", false);
+		const sfw = interaction.options.getBoolean("sfw", false) ?? false;
+		const status = interaction.options.getString("status", false);
+		const type = interaction.options.getString("type", false);
+		const rating = interaction.options.getString("rating", false);
 
 		if (
 			minScore &&
@@ -134,10 +134,11 @@ export default class InfoCommand extends Command {
 		const params = new URLSearchParams();
 		if (minScore) params.append("min_score", minScore);
 		if (maxScore) params.append("max_score", maxScore);
-		if (sfw !== null) params.append("sfw", sfw.toString());
+		if (rating) params.append("rating", rating);
 		if (status) params.append("status", status);
 		if (type) params.append("type", type);
-		if (rating) params.append("rating", rating);
+		if (sfw) params.append("sfw", sfw.toString());
+		
 		const URL = `${apis.jikan}/anime?q=${encodeURIComponent(
 			query,
 		)}&limit=5&${params.toString()}`;

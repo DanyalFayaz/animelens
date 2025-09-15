@@ -11,7 +11,8 @@
 		"format": "prettier --write .",
 		"db:generate": "cross-env NODE_ENV=development prisma generate",
 		"db:migrate": "cross-env NODE_ENV=development prisma migrate dev",
-		"db:push": "cross-env NODE_ENV=development prisma db push"
+		"db:push": "cross-env NODE_ENV=development prisma db push",
+		"db:studio": "cross-env NODE_ENV=development prisma studio"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.2.21",

@@ -28,19 +28,19 @@ export interface ListStatus {
 	score: number;
 	num_episodes_watched: number;
 	is_rewatching: boolean;
-	updated_at: Date;
-	finish_date?: Date;
-	start_date?: Date;
+	updated_at: string;
+	finish_date?: string;
+	start_date?: string;
 }
 
 export interface MALAnime {
 	id: number;
 	title: string;
 	main_picture: Record<"medium" | "large", string>;
-	start_date: Date;
+	start_date: string;
 	alternative_titles: { synonyms: string[]; en: string; ja: string };
 	synopsis: string;
-	rank: number;
+	rank?: number;
 	popularity: number;
 	num_list_users: number;
 	num_scoring_users: number;
@@ -49,12 +49,12 @@ export interface MALAnime {
 	genres: { id: number; name: string }[];
 	num_episodes: number;
 	start_season: { year: number; season: string };
-	broadcast: { day_of_the_week: string; start_time: string };
+	broadcast?: { day_of_the_week: string; start_time: string };
 	source: string;
-	average_episode_duration: number;
+	average_episode_duration?: number;
 	rating: string;
 	pictures: Record<"medium" | "large", string>[];
-	background: string;
+	background?: string;
 	related_anime: RelatedAnime[];
 	related_manga: any[];
 	recommendations: { node: Node; num_recommendations: number }[];

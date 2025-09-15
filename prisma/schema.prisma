@@ -19,6 +19,7 @@ model Cooldown {
   createdAt DateTime @default(now())
 
   @@unique([userId, command])
+  @@index([expiresAt])
 }
 
 model User {
