@@ -5,11 +5,23 @@
 [![Bun](https://img.shields.io/badge/Bun-000?logo=bun&logoColor=fff)](https://bun.sh/)
 [![Discord.js](https://img.shields.io/badge/Discord.js-5865F2?logo=discord&logoColor=white)](https://discord.js.org/)
 
-<img src=".github/BANNER.png" alt="AnimeLens Banner" width="600">
+<a href="https://animelens.thelooped.tech/"><img src=".github/BANNER.png" alt="AnimeLens Banner" width="600"></a>
 
 A powerful Discord bot for anime and manga enthusiasts! Get instant information about your favorite anime, manga, characters, and more.
 
 > **⚠️ Alpha Version**: This project was created in just a few hours and is currently in alpha. Expect frequent updates and improvements!
+
+## 🌐 Website
+
+➡️ https://animelens.thelooped.tech/
+
+Currently, it provides:
+
+- Overview of the bot
+- Quick invite access
+- Basic command showcase
+
+More functionality (dashboards, analytics, user stats, preferences) will be added in future iterations.
 
 ## 🚀 Installation
 
