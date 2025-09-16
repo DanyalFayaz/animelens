@@ -30,7 +30,7 @@
 			"@util/*": ["./src/util/*"],
 			"@classes/*": ["./src/classes/*"],
 			"@interfaces/*": ["./src/interfaces/*"],
-			"@web/*": ["./web/*"],
+			"@web/*": ["./web/*"]
 		}
 	}
 }

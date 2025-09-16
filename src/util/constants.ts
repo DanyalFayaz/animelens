@@ -5,7 +5,7 @@ export const emojis = {
 	animethemes: "<:animethemes:1414137799313064019>",
 	myanimelist: "<:myanimelist:1414137135082115112>",
 	top_gg: "<:top_gg:1417323021022269491>",
-	discord: "<:discord:1417323281916104714>"
+	discord: "<:discord:1417323281916104714>",
 };
 
 export const apis = {

@@ -138,7 +138,7 @@ export default class InfoCommand extends Command {
 		if (status) params.append("status", status);
 		if (type) params.append("type", type);
 		if (sfw) params.append("sfw", sfw.toString());
-		
+
 		const URL = `${apis.jikan}/anime?q=${encodeURIComponent(
 			query,
 		)}&limit=5&${params.toString()}`;

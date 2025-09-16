@@ -30,7 +30,7 @@ export default class ReadyEvent extends Event<"clientReady"> {
 		};
 		setNextActivity();
 		setInterval(setNextActivity, 60 * 1000).unref?.();
-		
+
 		consola.success(
 			`Logged in as ${client.user!.username} (${client.user!.id})`,
 		);
@@ -45,7 +45,9 @@ export default class ReadyEvent extends Event<"clientReady"> {
 				where: { expiresAt: { lt: now } },
 			});
 			if (result.count > 0) {
-				consola.info(`Cleaned up ${result.count} expired cooldown(s) on startup.`);
+				consola.info(
+					`Cleaned up ${result.count} expired cooldown(s) on startup.`,
+				);
 			} else {
 				consola.info("No expired cooldowns to clean up on startup.");
 			}
@@ -53,19 +55,24 @@ export default class ReadyEvent extends Event<"clientReady"> {
 			consola.warn("Failed to clean up expired cooldowns on startup", err);
 		}
 
-		setInterval(async () => {
-			try {
-				const now = new Date();
-				const result = await prisma.cooldown.deleteMany({
-					where: { expiresAt: { lt: now } },
-				});
-				if (result.count > 0) {
-					consola.info(`Periodic cleanup removed ${result.count} expired cooldown(s).`);
+		setInterval(
+			async () => {
+				try {
+					const now = new Date();
+					const result = await prisma.cooldown.deleteMany({
+						where: { expiresAt: { lt: now } },
+					});
+					if (result.count > 0) {
+						consola.info(
+							`Periodic cleanup removed ${result.count} expired cooldown(s).`,
+						);
+					}
+				} catch (err) {
+					consola.warn("Periodic cooldown cleanup failed", err);
 				}
-			} catch (err) {
-				consola.warn("Periodic cooldown cleanup failed", err);
-			}
-		}, 30 * 60 * 1000).unref?.(); // Cleanup every 30 minutes
+			},
+			30 * 60 * 1000,
+		).unref?.(); // Cleanup every 30 minutes
 
 		try {
 			await fetch(apis.discordbotsgg + `/bots/${client.user?.id}/stats`, {

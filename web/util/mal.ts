@@ -3,7 +3,8 @@ import { apis } from "@util/constants";
 import { prisma } from "@util/db";
 import consola from "consola";
 
-const { MAL_CLIENT_ID, MAL_CLIENT_SECRET, MAL_CALLBACK_URL, SERVER_DOMAIN } = Bun.env;
+const { MAL_CLIENT_ID, MAL_CLIENT_SECRET, MAL_CALLBACK_URL, SERVER_DOMAIN } =
+	Bun.env;
 
 export async function exchangeCodeForTokens(code: string, verifier: string) {
 	const res = await fetch(`${apis.myanimelistOAuth}/token`, {
