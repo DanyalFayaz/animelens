@@ -48,6 +48,14 @@ A powerful Discord bot for anime and manga enthusiasts! Get instant information 
    bun run start
    ```
 
+## 🗳️ Voting
+
+Support AnimeLens by voting for it on these bot listing sites:
+
+- [Top.gg](https://top.gg/bot/1386365602167390289)
+- [Discord Bot List](https://discordbotlist.com/bots/animelens)
+- [Botlist.me](https://botlist.me/bots/1386365602167390289)
+
 ## 🏗️ Architecture
 
 AnimeLens is built with a modular architecture to ensure scalability and maintainability:

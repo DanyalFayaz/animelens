@@ -25,11 +25,12 @@
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"noPropertyAccessFromIndexSignature": false,
-		"baseUrl": "./src",
+		"baseUrl": ".",
 		"paths": {
-			"@util/*": ["util/*"],
-			"@classes/*": ["classes/*"],
-			"@interfaces/*": ["interfaces/*"]
+			"@util/*": ["./src/util/*"],
+			"@classes/*": ["./src/classes/*"],
+			"@interfaces/*": ["./src/interfaces/*"],
+			"@web/*": ["./web/*"],
 		}
 	}
 }

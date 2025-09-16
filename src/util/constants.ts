@@ -8,6 +8,7 @@ export const emojis = {
 
 export const apis = {
 	myanimelist: "https://api.myanimelist.net/v2",
+	myanimelistOAuth: "https://myanimelist.net/v1/oauth2",
 	animethemes: "https://api.animethemes.moe",
 	jikan: "https://api.jikan.moe/v4",
 	discordbotsgg: "https://discord.bots.gg/api/v1",

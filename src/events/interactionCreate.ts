@@ -83,6 +83,17 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 
 			const effectiveCooldown = isOwner ? 0 : (command.cooldown ?? 3);
 			if (effectiveCooldown > 0) {
+				try {
+					await prisma.cooldown.deleteMany({
+						where: {
+							userId: interaction.user.id,
+							expiresAt: { lt: new Date() },
+						},
+					});
+				} catch (cleanupErr) {
+					consola.warn("Failed per-user cooldown cleanup", cleanupErr);
+				}
+
 				const now = new Date();
 				const key = { userId: interaction.user.id, command: command.name };
 

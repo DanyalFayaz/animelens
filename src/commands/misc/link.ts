@@ -26,7 +26,7 @@ export default class LinkCommand extends Command {
 				.setStyle(ButtonStyle.Link)
 				.setLabel("Link MyAnimeList")
 				.setEmoji(emojis.myanimelist)
-				.setURL(`${Bun.env.SERVER_DOMAIN}/link-mal/${interaction.user.id}`),
+				.setURL(`${Bun.env.SERVER_DOMAIN}/mal/link/${interaction.user.id}`),
 		);
 
 		const LinkEmbed = baseEmbed({

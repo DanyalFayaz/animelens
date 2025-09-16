@@ -1,10 +1,11 @@
 import type DiscordClient from "@classes/client";
 import { ActivityType } from "discord.js";
 import { Event } from "@classes/event";
-import { app } from "server";
+import { apis } from "@util/constants";
+import { prisma } from "@util/db";
+import { app } from "@web/index";
 import registerCommands from "@util/register";
 import consola from "consola";
-import { apis } from "@util/constants";
 
 export default class ReadyEvent extends Event<"clientReady"> {
 	constructor() {
@@ -27,7 +28,35 @@ export default class ReadyEvent extends Event<"clientReady"> {
 		await registerCommands(client, Bun.env.NODE_ENV === "development");
 
 		try {
-			await fetch(apis.discordbotsgg + `/bots/1386365602167390289/stats`, {
+			const now = new Date();
+			const result = await prisma.cooldown.deleteMany({
+				where: { expiresAt: { lt: now } },
+			});
+			if (result.count > 0) {
+				consola.info(`Cleaned up ${result.count} expired cooldown(s) on startup.`);
+			} else {
+				consola.info("No expired cooldowns to clean up on startup.");
+			}
+		} catch (err) {
+			consola.warn("Failed to clean up expired cooldowns on startup", err);
+		}
+
+		setInterval(async () => {
+			try {
+				const now = new Date();
+				const result = await prisma.cooldown.deleteMany({
+					where: { expiresAt: { lt: now } },
+				});
+				if (result.count > 0) {
+					consola.info(`Periodic cleanup removed ${result.count} expired cooldown(s).`);
+				}
+			} catch (err) {
+				consola.warn("Periodic cooldown cleanup failed", err);
+			}
+		}, 30 * 60 * 1000).unref?.(); // Cleanup every 30 minutes
+
+		try {
+			await fetch(apis.discordbotsgg + `/bots/${client.user?.id}/stats`, {
 				method: "POST",
 				headers: {
 					Authorization: `${Bun.env.DB_GG_TOKEN}`,
@@ -40,7 +69,7 @@ export default class ReadyEvent extends Event<"clientReady"> {
 				}),
 			});
 		} catch {}
-		
+
 		app.listen(Bun.env.PORT, () => {
 			consola.success(`Server running on port ${Bun.env.PORT}`);
 		});

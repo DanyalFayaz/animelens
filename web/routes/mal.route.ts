@@ -1,15 +1,17 @@
-import express from "express";
-import { exchangeCodeForTokens, fetchMalUser } from "./mal";
-import { generateVerifier, generateChallenge } from "./pkce";
+import { generateChallenge, generateVerifier } from "../util/pkce";
+import { exchangeCodeForTokens, fetchMalUser } from "../util/mal";
+import { Router } from "express";
 import { prisma } from "@util/db";
+import { apis } from "@util/constants";
 import consola from "consola";
 
-export const app = express();
-const { MAL_CLIENT_ID, MAL_CALLBACK_URL } = Bun.env;
+const router = Router();
+const { MAL_CLIENT_ID, MAL_CALLBACK_URL, SERVER_DOMAIN } = Bun.env;
 
-app.get("/link-mal/:discordId", async (req, res) => {
-	const discordId = req.params.discordId;
-	if (!discordId) return res.status(400).send("Missing discordId");
+router.get("/link/:discordId", async (req, res) => {
+	const { discordId } = req.params;
+	if (!discordId)
+		return res.status(400).send("Missing discordId in request parameters");
 
 	const verifier = generateVerifier();
 	const challenge = generateChallenge(verifier);
@@ -20,17 +22,17 @@ app.get("/link-mal/:discordId", async (req, res) => {
 		create: { discordId, verifier },
 	});
 
-	const url = new URL("https://myanimelist.net/v1/oauth2/authorize");
+	const url = new URL(`${apis.myanimelistOAuth}/authorize`);
 	url.searchParams.set("response_type", "code");
 	url.searchParams.set("client_id", MAL_CLIENT_ID!);
 	url.searchParams.set("code_challenge", challenge);
-	url.searchParams.set("redirect_uri", MAL_CALLBACK_URL!);
+	url.searchParams.set("redirect_uri", SERVER_DOMAIN + MAL_CALLBACK_URL!);
 	url.searchParams.set("state", session.discordId);
 
 	res.redirect(url.toString());
 });
 
-app.get("/callback", async (req, res) => {
+router.get("/callback", async (req, res) => {
 	const { code, state } = req.query;
 	if (!code || !state) return res.status(400).send("Missing code/state");
 
@@ -65,14 +67,15 @@ app.get("/callback", async (req, res) => {
 			},
 		});
 
-		// cleanup auth session
 		await prisma.authSession.delete({
 			where: { discordId: session.discordId },
 		});
 
-		res.sendFile("success.html", { root: "./public" });
+		res.redirect("/success");
 	} catch (err: any) {
 		consola.error(err);
 		res.status(500).send("OAuth2 flow failed");
 	}
 });
+
+export default router;
