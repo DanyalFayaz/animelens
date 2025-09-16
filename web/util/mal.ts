@@ -3,10 +3,10 @@ import { apis } from "@util/constants";
 import { prisma } from "@util/db";
 import consola from "consola";
 
-const { MAL_CLIENT_ID, MAL_CLIENT_SECRET, MAL_CALLBACK_URL } = Bun.env;
+const { MAL_CLIENT_ID, MAL_CLIENT_SECRET, MAL_CALLBACK_URL, SERVER_DOMAIN } = Bun.env;
 
 export async function exchangeCodeForTokens(code: string, verifier: string) {
-	const res = await fetch("https://myanimelist.net/v1/oauth2/token", {
+	const res = await fetch(`${apis.myanimelistOAuth}/token`, {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: new URLSearchParams({
@@ -14,7 +14,7 @@ export async function exchangeCodeForTokens(code: string, verifier: string) {
 			client_secret: MAL_CLIENT_SECRET!,
 			code,
 			grant_type: "authorization_code",
-			redirect_uri: MAL_CALLBACK_URL!,
+			redirect_uri: SERVER_DOMAIN + MAL_CALLBACK_URL!,
 			code_verifier: verifier,
 		}),
 	});
@@ -27,7 +27,7 @@ export async function exchangeCodeForTokens(code: string, verifier: string) {
 }
 
 export async function refreshTokens(refreshToken: string) {
-	const res = await fetch("https://myanimelist.net/v1/oauth2/token", {
+	const res = await fetch(`${apis.myanimelistOAuth}/token`, {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: new URLSearchParams({

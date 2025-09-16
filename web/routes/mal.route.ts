@@ -47,7 +47,6 @@ router.get("/callback", async (req, res) => {
 			session.verifier,
 		);
 		const malUser = await fetchMalUser(tokens.access_token);
-		console.log(malUser, tokens)
 
 		await prisma.user.upsert({
 			where: { id: session.discordId },
