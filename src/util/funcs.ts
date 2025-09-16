@@ -6,6 +6,7 @@ import {
 	type InteractionReplyOptions,
 } from "discord.js";
 import { client } from "../";
+import { WEBSITE_URL } from "@util/constants";
 import characterInfoEmbed from "./embeds/character";
 import animeInfoEmbed from "./embeds/anime";
 import mangaInfoEmbed from "./embeds/manga";
@@ -28,7 +29,7 @@ export function baseEmbed(data: EmbedData): EmbedBuilder {
 		color: Colors.Purple,
 		timestamp: new Date().toISOString(),
 		footer: {
-			text: "Made with ❤️ by Cored, Inc",
+			text: `AnimeLens • ${WEBSITE_URL.replace(/^https?:\/\//, "")}`,
 			iconURL: client.user!.displayAvatarURL() + "?size=1024",
 		},
 		...data,

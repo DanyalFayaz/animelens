@@ -40,5 +40,6 @@
 		"url": "git+https://github.com/unloopedmido/animelens.git"
 	},
 	"license": "MIT",
-	"author": "Mohammed Haism <mohdhaism16@gmail.com>"
+	"author": "Mohammed Haism <mohdhaism16@gmail.com>",
+	"homepage": "https://animelens.thelooped.tech"
 }

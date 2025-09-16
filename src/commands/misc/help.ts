@@ -7,7 +7,7 @@ import {
 import type DiscordClient from "@classes/client";
 import { baseEmbed, capitalize } from "@util/funcs";
 import { Command } from "@classes/command";
-import { emojis } from "@util/constants";
+import { emojis, WEBSITE_URL, INVITE_URL, VOTE_URLS } from "@util/constants";
 
 export default class HelpCommand extends Command {
 	constructor() {
@@ -79,8 +79,7 @@ export default class HelpCommand extends Command {
 
 		const HelpEmbed = baseEmbed({
 			title: `✨ ${client.user!.username} Commands & Info`,
-			description:
-				"Hi! I'm your anime assistant here to provide you with anime info, quotes, characters & more.\nType / and start typing a command name to see autocomplete.\nAdd me to more servers & share the love!",
+			description: `Hi! I'm your anime assistant for instant anime & manga lookups, quotes, characters, schedules & more.\n\n🌐 Website: [Here](${WEBSITE_URL})`,
 			fields:
 				fields.length > 0
 					? fields
@@ -90,7 +89,22 @@ export default class HelpCommand extends Command {
 
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
 			new ButtonBuilder()
-				.setLabel("View on Github")
+				.setLabel("Website")
+				.setEmoji("🌐")
+				.setStyle(ButtonStyle.Link)
+				.setURL(WEBSITE_URL),
+			new ButtonBuilder()
+				.setLabel("Invite")
+				.setEmoji(emojis.discord)
+				.setStyle(ButtonStyle.Link)
+				.setURL(INVITE_URL),
+			new ButtonBuilder()
+				.setLabel("Vote (Top.gg)")
+				.setEmoji(emojis.top_gg)
+				.setStyle(ButtonStyle.Link)
+				.setURL(VOTE_URLS.topgg),
+			new ButtonBuilder()
+				.setLabel("GitHub")
 				.setEmoji(emojis.github)
 				.setStyle(ButtonStyle.Link)
 				.setURL(Bun.env.GITHUB_REPO_URL!),

@@ -1,7 +1,7 @@
 import type DiscordClient from "@classes/client";
 import { ActivityType } from "discord.js";
 import { Event } from "@classes/event";
-import { apis } from "@util/constants";
+import { apis, WEBSITE_URL } from "@util/constants";
 import { prisma } from "@util/db";
 import { app } from "@web/index";
 import registerCommands from "@util/register";
@@ -16,9 +16,21 @@ export default class ReadyEvent extends Event<"clientReady"> {
 	}
 
 	public override async execute(client: DiscordClient): Promise<void> {
-		client.user!.setActivity(`/help | by Cored, Inc`, {
-			type: ActivityType.Watching,
-		});
+		const activities = [
+			{ name: `/help | anime & manga`, type: ActivityType.Watching },
+			{ name: `anime data for you`, type: ActivityType.Playing },
+			{ name: `animelens.thelooped.tech`, type: ActivityType.Watching },
+		];
+		let current = 0;
+		const setNextActivity = () => {
+			client.user!.setActivity(activities[current]!.name, {
+				type: activities[current]!.type,
+			});
+			current = (current + 1) % activities.length;
+		};
+		setNextActivity();
+		setInterval(setNextActivity, 60 * 1000).unref?.();
+		
 		consola.success(
 			`Logged in as ${client.user!.username} (${client.user!.id})`,
 		);
