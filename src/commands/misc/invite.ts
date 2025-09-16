@@ -14,7 +14,6 @@ export default class InviteCommand extends Command {
 		super({
 			name: "invite",
 			description: "Get the bot invite link",
-			category: "misc",
 		});
 	}
 

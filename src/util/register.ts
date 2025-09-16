@@ -1,7 +1,7 @@
 import type { Command } from "@classes/command";
 import type DiscordClient from "@classes/client";
 import { REST, Routes, ApplicationCommandOptionType } from "discord.js";
-import { capitalize, updateCommands } from "./funcs";
+import { capitalize, dumpCommands, updateCommands } from "./funcs";
 import consola from "consola";
 import { apis } from "./constants";
 
@@ -14,30 +14,7 @@ export default async function registerCommands(
 	dev = false,
 	prune = true,
 ) {
-	// Build grouped structure: category -> subcommands
-	const grouped = new Map<string, Command[]>();
-	const rootCommands: Command[] = [];
-
-	for (const cmd of client.commands.values()) {
-		if (cmd.category) {
-			if (!grouped.has(cmd.category)) grouped.set(cmd.category, []);
-			grouped.get(cmd.category)!.push(cmd);
-		} else {
-			rootCommands.push(cmd);
-		}
-	}
-
-	const commandsJSON = [
-		...rootCommands.map((c) => c.toJSON()),
-		...Array.from(grouped.entries()).map(([category, cmds]) => ({
-			name: category,
-			description: `${capitalize(category)} commands`,
-			options: cmds.map((sub) => ({
-				...sub.toJSON(),
-				type: ApplicationCommandOptionType.Subcommand,
-			})),
-		})),
-	];
+	const commandsJSON = await dumpCommands();
 
 	if (!dev && Bun.env.TOP_GG_TOKEN)
 		updateCommands({

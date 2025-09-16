@@ -1,11 +1,13 @@
 import type DiscordClient from "@classes/client";
 import { ActivityType } from "discord.js";
 import { Event } from "@classes/event";
-import { apis, WEBSITE_URL } from "@util/constants";
+import { apis } from "@util/constants";
 import { prisma } from "@util/db";
 import { app } from "@web/index";
 import registerCommands from "@util/register";
 import consola from "consola";
+import path from "path";
+import { dumpCommands } from "@util/funcs";
 
 export default class ReadyEvent extends Event<"clientReady"> {
 	constructor() {

@@ -3,20 +3,155 @@
 
 <head>
   <%- include('partials/meta') %>
-  <title>AnimeLens • Commands</title>
+  <title>AnimeLens - Commands</title>
+  <meta name="description" content="Browse all AnimeLens Discord bot commands by category. Search and discover anime, manga, schedules, quizzes, quotes, themes and more." />
 </head>
 
-<body class="min-h-screen font-[Inter] bg-[#07060a] text-white flex flex-col selection:bg-purple-600/70 selection:text-white relative overflow-hidden">
-  <div class="fixed inset-0 -z-10 overflow-hidden [mask-image:linear-gradient(to_bottom,black,transparent)]">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(129,53,216,0.25),transparent_60%),linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:100%_100%,40px_40px,40px_40px]"></div>
-    <div class="absolute -top-40 -left-40 w-[38rem] h-[38rem] bg-purple-700/30 rounded-full blur-3xl"></div>
-    <div class="absolute top-1/3 -right-40 w-[32rem] h-[32rem] bg-fuchsia-600/30 rounded-full blur-3xl"></div>
-  </div>
+<body class="min-h-screen bg-[#07060a] text-white selection:bg-purple-600/70 selection:text-white">
+  <%- include('partials/gradients') %>
   <%- include('partials/header') %>
-  <main class="flex-1 flex items-center justify-center px-6 py-20">
-    <h1 class="font-bold text-5xl">Under Construction</h1>
-  </main>
+
+  <section class="relative z-10 pt-10 pb-10 px-6">
+    <div class="mx-auto max-w-6xl">
+      <div class="flex items-start gap-8">
+        <aside class="hidden lg:block w-64 shrink-0 sticky top-4 self-start">
+          <div class="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+            <p class="text-xs uppercase tracking-wide text-white/50 mb-3">Categories</p>
+            <nav id="categoryNav" class="space-y-1">
+              <% categories.forEach(function(cat){ %>
+              <a href="#<%= cat.id %>" class="group flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5">
+                <span class="truncate"><%= cat.name %></span>
+                <span class="text-[10px] rounded bg-white/10 px-2 py-0.5 text-white/60 group-hover:bg-white/15"><%= cat.count %></span>
+              </a>
+              <% }) %>
+            </nav>
+          </div>
+
+          <div class="mt-4 rounded-xl border border-white/10 bg-gradient-to-br from-purple-600/10 to-fuchsia-600/10 p-4">
+            <p class="text-sm font-semibold">Invite AnimeLens</p>
+            <p class="mt-1 text-xs text-white/65">Bring fast anime & manga features to your server.</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1386365602167390289" class="mt-3 inline-flex items-center gap-2 rounded-md bg-gradient-to-br from-purple-600 to-fuchsia-600 px-3 py-1.5 text-xs font-semibold shadow hover:from-purple-500 hover:to-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-purple-500/60">Invite</a>
+          </div>
+        </aside>
+
+        <div class="min-w-0 flex-1">
+          <div class="mx-auto max-w-3xl text-center">
+            <h1 class="text-3xl sm:text-4xl font-extrabold leading-tight tracking-tight bg-gradient-to-br from-white via-purple-100 to-purple-300 bg-clip-text text-transparent">Commands</h1>
+            <p class="mt-3 text-sm text-white/70">Explore all commands, grouped by category. Use search to quickly find what you need.</p>
+          </div>
+
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="relative flex-1">
+              <input id="search" type="text" aria-label="Search commands" placeholder="Search commands (e.g. anime info, schedule, quiz)" class="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-9 text-sm placeholder-white/40 outline-none focus:ring-2 focus:ring-white/20" />
+              <iconify-icon icon="lucide:search" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50"></iconify-icon>
+            </div>
+          </div>
+
+          <div id="results" class="mt-8 space-y-10">
+            <% categories.forEach(function(cat){ %>
+            <section class="scroll-mt-20" id="<%= cat.id %>" data-category>
+              <div class="flex items-center justify-between">
+                <h2 class="text-xl sm:text-2xl font-bold tracking-tight"><%= cat.name %></h2>
+                <a href="#" class="text-xs text-white/50 hover:text-white" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top</a>
+              </div>
+              <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-cards>
+                <% cat.commands.forEach(function(cmd){ %>
+                <div class="group relative rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur overflow-hidden" data-card data-name="<%= cmd.name %>" data-desc="<%= cmd.description %>">
+                  <div class="absolute -right-10 -top-10 w-28 h-28 bg-purple-600/15 rounded-full blur-2xl group-hover:scale-125 transition"></div>
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="font-semibold text-sm flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded bg-white/10 text-[11px] text-white/70 select-all">/<%= cmd.name %></span>
+                        <% if (cmd.authentication) { %>
+                        <span class="text-[10px] rounded bg-rose-500/20 text-rose-200 px-2 py-0.5">MAL</span>
+                        <% } %>
+                      </p>
+                      <p class="mt-2 text-xs text-white/70 leading-relaxed"><%= cmd.description %></p>
+                    </div>
+                    <div class="text-right shrink-0">
+                      <p class="text-[10px] text-white/50">Cooldown</p>
+                      <p class="text-xs font-semibold"><%= (cmd.cooldown || 3) %>s</p>
+                    </div>
+                  </div>
+
+                  <% if (Array.isArray(cmd.options) && cmd.options.length) { %>
+                  <div class="mt-3 border-t border-white/10 pt-3">
+                    <p class="text-[11px] text-white/60 mb-1">Options</p>
+                    <div class="flex flex-wrap gap-2">
+                      <% cmd.options.forEach(function(opt){ %>
+                      <span class="rounded border border-white/10  px-2 py-0.5 text-[11px] text-white/70 <%= opt.required ? "bg-purple-500/20" : "bg-white/5" %>" title="<%= opt.description || '' %>"><%= opt.name %></span>
+                      <% }) %>
+                    </div>
+                  </div>
+                  <% } %>
+                </div>
+                <% }) %>
+              </div>
+
+              <% if (!cat.commands || !cat.commands.length) { %>
+              <div class="mt-4 rounded-lg border border-white/10 bg-white/5 p-4 text-sm text-white/60">No commands in this category yet.</div>
+              <% } %>
+            </section>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <%- include('partials/footer') %>
+
+  <script>
+    (function() {
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+      const search = $('#search');
+      const results = $('#results');
+      const nav = $('#categoryNav');
+      const links = nav ? $$('#categoryNav a') : [];
+      const norm = s => (s || '').toLowerCase().trim();
+
+      function filter() {
+        const q = norm(search && search.value);
+        $$('#results [data-category]').forEach(sec => {
+          const cards = $$('.group[data-card]', sec);
+          let visible = 0;
+          cards.forEach(card => {
+            const hit = !q || norm(card.dataset.name).includes(q) || norm(card.dataset.desc).includes(q);
+            card.style.display = hit ? '' : 'none';
+            if (hit) visible++;
+          });
+          sec.style.display = visible ? '' : 'none';
+        });
+        if (!nav) return;
+        links.forEach(a => {
+          const id = a.getAttribute('href').slice(1);
+          const sec = document.getElementById(id);
+          const count = sec ? $$('.group[data-card]', sec).filter(c => c.style.display !== 'none').length : 0;
+          const badge = a.querySelector('span:last-child');
+          if (badge) badge.textContent = String(count);
+          a.style.opacity = count ? '1' : '0.5';
+          a.style.pointerEvents = count ? '' : 'none';
+        });
+      }
+
+      function highlight() {
+        const hash = (location.hash || '').slice(1);
+        links.forEach(l => l.classList.remove('ring-1', 'ring-white/20', 'bg-white/5'));
+        if (!hash || !document.getElementById(hash)) return;
+        const active = links.find(a => a.getAttribute('href') === '#' + hash);
+        if (active) active.classList.add('ring-1', 'ring-white/20', 'bg-white/5');
+      }
+
+      if (search) search.addEventListener('input', filter);
+      window.addEventListener('hashchange', highlight);
+      window.addEventListener('load', () => {
+        filter();
+        highlight();
+      });
+    })();
+  </script>
+
 </body>
 
 </html>

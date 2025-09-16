@@ -44,4 +44,15 @@ export abstract class Command {
 			options: this.options ?? [],
 		};
 	}
+
+	toViewJSON() {
+		return {
+			name: this.name,
+			description: this.description,
+			cooldown: this.cooldown ?? 3,
+			category: this.category ?? null,
+			authentication: this.authentication ?? false,
+			options: this.options ?? [],
+		};
+	}
 }

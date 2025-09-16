@@ -8,7 +8,6 @@ export default class PingCommand extends Command {
 		super({
 			name: "ping",
 			description: "Check the bot's latency.",
-			category: "misc",
 			cooldown: 10,
 		});
 	}

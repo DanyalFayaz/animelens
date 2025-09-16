@@ -1,4 +1,5 @@
 import {
+	ApplicationCommandOptionType,
 	Colors,
 	CommandInteraction,
 	EmbedBuilder,
@@ -11,6 +12,7 @@ import characterInfoEmbed from "./embeds/character";
 import animeInfoEmbed from "./embeds/anime";
 import mangaInfoEmbed from "./embeds/manga";
 import consola from "consola";
+import type { Command } from "@classes/command";
 
 /** Capitalizes the first letter of a string
  * @param str The string to capitalize
@@ -201,3 +203,74 @@ export async function updateCommands(options: UpdateParams) {
 		consola.error(`Error while updating commands on ${options.name}`, err);
 	}
 }
+
+/** Dumps all registered commands
+ * @returns The commands in JSON format
+ */
+export async function dumpCommands(view: boolean = false) {
+	const grouped = new Map<string, Command[]>();
+	const rootCommands: Command[] = [];
+
+	for (const cmd of client.commands.values()) {
+		if (cmd.category) {
+			if (!grouped.has(cmd.category)) grouped.set(cmd.category, []);
+			grouped.get(cmd.category)!.push(cmd);
+		} else {
+			rootCommands.push(cmd);
+		}
+	}
+
+	const commandsJSON = [
+		...rootCommands.map((c) => (view ? c.toViewJSON() : c.toJSON())),
+		...Array.from(grouped.entries()).map(([category, cmds]) => ({
+			name: category,
+			description: `${capitalize(category)} commands`,
+			options: cmds.map((sub) => ({
+				...(view ? sub.toViewJSON() : sub.toJSON()),
+				type: ApplicationCommandOptionType.Subcommand,
+			})),
+		})),
+	];
+
+	return commandsJSON;
+}
+
+/** Extracts the categories from a list of commands
+ * @param commands The list of commands
+ * @returns The unique categories
+ */
+type Cat = { id: string; name: string; commands: Command[]; count: number };
+
+export const getCategories = (
+	commands: Command[],
+	includeUncategorized = true,
+): Cat[] => {
+	const cmdGroups = commands.filter(
+		(c) => !c.category && !c.cooldown && c.options,
+	);
+	const allCommands = [
+		...commands.filter((c) => c.category || c.cooldown),
+		...cmdGroups.map((c) => c.options as unknown as Command[]).flat(),
+	];
+	const groups = allCommands.reduce(
+		(m, c) => {
+			const k = (c.category && String(c.category).trim()) || "Utilities";
+			(m[k] ||= []).push(c);
+			return m;
+		},
+		{} as Record<string, Command[]>,
+	);
+
+	return Object.entries(groups)
+		.filter(([k]) => k !== "Utilities" || includeUncategorized)
+		.map(([k, cmds]) => ({
+			id: k
+				.toLowerCase()
+				.replace(/[^\w]+/g, "-")
+				.replace(/^-+|-+$/g, ""),
+			name: capitalize(k),
+			commands: cmds,
+			count: cmds.length,
+		}))
+		.sort((a, b) => a.name.localeCompare(b.name));
+};
