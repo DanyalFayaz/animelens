@@ -4,6 +4,7 @@ import { baseEmbed, replyOrFollowUp } from "@util/funcs";
 import { Event } from "@classes/event";
 import { prisma } from "@util/db";
 import consola from "consola";
+import errorEmbed from "@util/embeds/error";
 
 export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 	constructor() {
@@ -35,13 +36,13 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 		const isOwner = owners.has(interaction.user.id);
 
 		if (command.category === "owner" && !isOwner) {
-			const NoPermissionEmbed = baseEmbed({
-				title: "No permission",
-				description: "You do not have permission to use this command.",
-			});
-
 			await replyOrFollowUp(interaction)({
-				embeds: [NoPermissionEmbed],
+				embeds: [
+					errorEmbed(
+						"No permission",
+						"You do not have permission to use this command.",
+					),
+				],
 				ephemeral: true,
 			});
 			return;
@@ -55,26 +56,24 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 				});
 
 				if (!userRecord) {
-					const UnauthenticatedEmbed = baseEmbed({
-						title: "Not linked",
-						description:
-							"You need to link your MyAnimeList account to use this command. Use `/link`.",
-					});
 					await replyOrFollowUp(interaction)({
-						embeds: [UnauthenticatedEmbed],
+						embeds: [
+							errorEmbed(
+								"Not linked",
+								"You need to link your MyAnimeList account to use this command. Use `/link`.",
+							),
+						],
 						ephemeral: true,
 					});
 					return;
 				}
 
 				if (!userRecord.malExpiresAt || userRecord.malExpiresAt < new Date()) {
-					const ExpiredEmbed = baseEmbed({
-						title: "Session expired",
-						description:
-							"Your MyAnimeList session has expired. Please use `/link` to relink.",
-					});
 					await replyOrFollowUp(interaction)({
-						embeds: [ExpiredEmbed],
+						embeds: [errorEmbed(
+							"Session expired",
+							"Your MyAnimeList session has expired. Please use `/link` to relink.",
+						)],
 						ephemeral: true,
 					});
 					return;
@@ -105,15 +104,16 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 					const remaining = Math.ceil(
 						(existing.expiresAt.getTime() - now.getTime()) / 1000,
 					);
-					const CooldownEmbed = baseEmbed({
-						author: {
-							name: interaction.user.username,
-							iconURL: interaction.user.displayAvatarURL(),
-						},
-						description: `You are on cooldown. Please wait ${remaining} more second(s) before reusing \`${command.name}\`.`,
-					});
 					await replyOrFollowUp(interaction)({
-						embeds: [CooldownEmbed],
+						embeds: [
+							errorEmbed(
+								"On Cooldown",
+								`You are on cooldown. Please wait ${remaining} more second(s) before reusing \`${command.name}\`.`,
+							).setAuthor({
+								name: interaction.user.username,
+								iconURL: interaction.user.displayAvatarURL?.() ?? undefined,
+							}),
+						],
 						ephemeral: true,
 					});
 					return;
@@ -137,7 +137,13 @@ export default class InteractionCreateEvent extends Event<"interactionCreate"> {
 			consola.error(err);
 			try {
 				await replyOrFollowUp(interaction)({
-					content: "There was an error while executing this command!",
+					embeds: [
+						errorEmbed(
+							"Uh oh!",
+							"An unknown error occurred while executing the command.",
+							err as Error
+						),
+					],
 					ephemeral: true,
 				});
 			} catch (replyErr) {
