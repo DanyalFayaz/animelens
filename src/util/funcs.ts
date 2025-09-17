@@ -164,10 +164,10 @@ export function chooseEmbed(type: string) {
  */
 export function replyOrFollowUp(interaction: CommandInteraction) {
 	if (interaction.replied || interaction.deferred) {
-		return interaction.followUp;
+		return interaction.followUp.bind(interaction);
 	}
 
-	return interaction.reply;
+	return interaction.reply.bind(interaction);
 }
 
 interface UpdateParams {
@@ -235,12 +235,13 @@ export async function dumpCommands(view: boolean = false) {
 	return commandsJSON;
 }
 
+
+type Cat = { id: string; name: string; commands: Command[]; count: number };
+
 /** Extracts the categories from a list of commands
  * @param commands The list of commands
  * @returns The unique categories
  */
-type Cat = { id: string; name: string; commands: Command[]; count: number };
-
 export const getCategories = (
 	commands: Command[],
 	includeUncategorized = true,

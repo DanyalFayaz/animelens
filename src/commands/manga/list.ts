@@ -10,12 +10,12 @@ import { apis } from "@util/constants";
 const LIST_FIELDS =
 	"id,title,main_picture,alternative_titles,synopsis,media_type,status,start_date,end_date,num_chapters,num_volumes,genres,authors,average_score,popularity,rank,background,related_anime,related_manga,recommendations,statistics";
 
-export default class ListCommand extends Command {
+export default class MangaListCommand extends Command {
 	constructor() {
 		super({
 			name: "list",
-			description: "List all anime in your MyAnimeList list.",
-			category: "anime",
+			description: "List all manga in your MyAnimeList list.",
+			category: "manga",
 			authentication: true,
 		});
 	}
