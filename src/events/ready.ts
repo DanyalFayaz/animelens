@@ -6,8 +6,6 @@ import { prisma } from "@util/db";
 import { app } from "@web/index";
 import registerCommands from "@util/register";
 import consola from "consola";
-import path from "path";
-import { dumpCommands } from "@util/funcs";
 
 export default class ReadyEvent extends Event<"clientReady"> {
 	constructor() {
